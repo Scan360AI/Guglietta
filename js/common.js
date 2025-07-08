@@ -25,7 +25,7 @@ function handleLogin(event) {
     // --- VALIDAZIONE CREDENZIALI ---
     // Sostituisci questa logica con una verifica sicura se necessario.
     // Accetta le credenziali predefinite o qualsiasi coppia per la demo.
-    if ((username === 'AdminGuglietta Global ' && password === 'Guglietta Global 2025') || (username && password)) {
+    if ((username === 'AdminGugliettaGlobal ' && password === 'GugliettaGlobal 2025') || (username && password)) {
         console.log('Login successful per', username);
         // Salva stato login (localStorage è per demo, NON sicuro per produzione)
         try {
