@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilancio Plus | Kitzanos Lab</title>
+    
+    <!-- Fogli di stile -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="css/styles2.css" rel="stylesheet">
+    <link href="css/print.css" rel="stylesheet" media="print">
+    
+    <style>
+        /* Stili specifici della landing page che integrano il tema principale */
+        .hero-section {
+            background: url('https://www.udacity.com/_next/image?url=https%3A%2F%2Fvideo.udacity-data.com%2Ftopher%2F2024%2FOctober%2F67098715_nd002%2Fnd002.jpg&w=3840&q=75') center center/cover no-repeat;
+            color: white;
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(25, 25, 112, 0.75);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            background-color: rgba(25, 25, 112, 0.1);
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .benefit-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .contact-button {
+            transition: all 0.3s ease;
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+        
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(25, 25, 112, 0.2);
+        }
+        
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .benefit-card {
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feature-box {
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            height: 100%;
+            background-color: white;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .cta-section {
+            background-color: var(--light);
+            padding: 5rem 0;
+            border-top: 1px solid rgba(25, 25, 112, 0.1);
+            border-bottom: 1px solid rgba(25, 25, 112, 0.1);
+        }
+        
+        .bg-primary {
+            background-color: var(--primary) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+        
+        .btn-success {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="assets/img/logo_scan.png" alt="Kitzanos Lab" class="img-fluid" style="height: 40px; filter: brightness(0) invert(1);">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Caratteristiche</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#benefits">Vantaggi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#process">Processo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contattaci</a>
+                    </li>
+                </ul>
+                <a href="#contact" class="btn btn-light ms-lg-3">Richiedi Info</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-pattern"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1 class="display-4 fw-bold mb-4">Bilancio Plus</h1>
+                    <h2 class="h3 mb-4">Ottimizza la presentazione finanziaria della tua azienda edile</h2>
+                    <p class="lead mb-5">Trasforma il tuo bilancio in uno strumento strategico per migliorare gli indici economico-finanziari e rafforzare il profilo di bancabilità della tua impresa di costruzioni.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="#features" class="btn btn-light btn-lg px-4 me-md-2">Scopri di più</a>
+                        <a href="#contact" class="btn btn-outline-light btn-lg px-4">Contattaci</a>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+
+    <!-- Vantaggi chiave con numeri -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="benefit-value"><i class="fas fa-chart-line"></i></div>
+                    <p>Miglioramento EBITDA fino al 21,6%</p>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="benefit-value"><i class="fas fa-money-bill-wave"></i></div>
+                    <p>Ottimizzazione ciclo circolante</p>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="benefit-value"><i class="fas fa-percentage"></i></div>
+                    <p>ROI fino al 130,5%</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="benefit-value"><i class="fas fa-shield-alt"></i></div>
+                    <p>Z-Score fino a 11,42</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title text-center">Caratteristiche del Servizio</h2>
+                    <p class="lead">Bilancio Plus è il servizio che analizza e ottimizza la rappresentazione delle performance aziendali nel settore costruzioni, nel pieno rispetto dei principi contabili OIC e della normativa vigente.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-box shadow-sm">
+                        <div class="feature-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <h3>Capitalizzazione Strategica</h3>
+                        <p>Analisi approfondita e capitalizzazione dei costi pluriennali per una rappresentazione più accurata del valore aziendale.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i>Capitalizzazione R&D e know-how</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Attivazione progetti in corso</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Valorizzazione software e licenze</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box shadow-sm">
+                        <div class="feature-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>Ottimizzazione Ammortamenti</h3>
+                        <p>Revisione delle politiche di ammortamento per una rappresentazione più fedele del capitale investito nel settore costruzioni.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i>Revisione aliquote ammortamento</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Estensione vita utile asset</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Metodi accelerati per asset obsoleti</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box shadow-sm">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Gestione Accantonamenti</h3>
+                        <p>Ottimizzazione degli accantonamenti per migliorare l'efficienza del capitale investito nelle imprese edili.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i>Revisione attuariale fondi personale</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Valutazione rischi operativi</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Ottimizzazione fondi garanzie</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box shadow-sm">
+                        <div class="feature-icon">
+                            <i class="fas fa-money-bill-alt"></i>
+                        </div>
+                        <h3>Ottimizzazione Capitale Circolante</h3>
+                        <p>Implementazione di operazioni per migliorare l'efficienza del capitale circolante nelle commesse edili.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i>Factoring pro-soluto per crediti</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Supply chain finance</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Ottimizzazione ciclo pagamenti</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box shadow-sm">
+                        <div class="feature-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Riclassificazione Patrimoniale</h3>
+                        <p>Analisi della struttura patrimoniale e ottimizzazione della rappresentazione per migliorare gli indici di solidità.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i>Segregazione crediti per natura</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Riclassificazione componenti finanziarie</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Ottimizzazione liquidità potenziale</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box shadow-sm">
+                        <div class="feature-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <h3>Ottimizzazione Fiscale</h3>
+                        <p>Valutazione completa degli effetti delle ottimizzazioni sui principali indicatori fiscali per imprese edili.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li><i class="fas fa-check text-success me-2"></i>Massimizzazione deduzioni ammissibili</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Utilizzo crediti d'imposta</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Ottimizzazione timing componenti reddituali</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section id="benefits" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title text-center">Vantaggi del Bilancio Plus</h2>
+                    <p class="lead">Scopri come Bilancio Plus può trasformare la presentazione delle performance finanziarie della tua impresa di costruzioni.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body p-4">
+                            <div class="benefit-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h3>Miglioramento degli Indici Economico-Finanziari</h3>
+                            <p>Ottimizzazione degli indicatori chiave che influenzano la valutazione dell'azienda edile:</p>
+                            <ul>
+                                <li>Incremento EBITDA margin fino al 21,6%</li>
+                                <li>Miglioramento ROI fino al 130,5%</li>
+                                <li>Ottimizzazione ROE fino all'88,7%</li>
+                                <li>Miglioramento ROS fino al 21,5%</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body p-4">
+                            <div class="benefit-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <h3>Rafforzamento del Profilo di Bancabilità</h3>
+                            <p>Miglioramento della percezione dell'impresa edile da parte degli istituti di credito:</p>
+                            <ul>
+                                <li>Ottimizzazione PFN/EBITDA (da negativo a positivo)</li>
+                                <li>Miglioramento del ciclo del circolante (fino a -226 giorni)</li>
+                                <li>Incremento Z-Score fino a 11,42 (zona di massima sicurezza)</li>
+                                <li>Miglioramento DSCR fino a 902,89</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body p-4">
+                            <div class="benefit-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h3>Piena Conformità Normativa</h3>
+                            <p>Tutte le ottimizzazioni proposte sono pienamente conformi ai principi contabili OIC e alla normativa vigente per il settore costruzioni:</p>
+                            <ul>
+                                <li>Rappresentazione veritiera secondo Art. 2426 c.c.</li>
+                                <li>Rispetto dei principi OIC 11, 15, 16, 19, 24 e 31</li>
+                                <li>Conformità al CCII per adeguati assetti organizzativi</li>
+                                <li>Documentazione completa e trasparente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card benefit-card h-100">
+                        <div class="card-body p-4">
+                            <div class="benefit-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <h3>Ottimizzazione della Liquidità</h3>
+                            <p>Significativo miglioramento della posizione di cassa dell'impresa edile:</p>
+                            <ul>
+                                <li>Incremento delle disponibilità liquide fino a €1-1,3 milioni</li>
+                                <li>Miglioramento della conversione EBITDA-Cash Flow</li>
+                                <li>Ottimizzazione del ciclo di pagamento fornitori</li>
+                                <li>Riduzione DSO (giorni crediti clienti) da 309 a 146 giorni</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title text-center">Come Funziona</h2>
+                    <p class="lead">Un approccio strutturato per ottimizzare la presentazione finanziaria della tua impresa edile</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="timeline">
+                        <div class="timeline-item mb-4">
+                            <div class="timeline-badge"></div>
+                            <div class="action-step">
+                                <h4><i class="fas fa-search me-2"></i>Analisi Preliminare</h4>
+                                <p>Esame approfondito della situazione contabile attuale e individuazione delle aree di potenziale ottimizzazione per la tua impresa edile.</p>
+                                <ul class="mt-2 mb-0">
+                                    <li>Analisi multivariata dei dati finanziari</li>
+                                    <li>Benchmark con aziende del settore costruzioni</li>
+                                    <li>Identificazione di 8 aree prioritarie di intervento</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item mb-4">
+                            <div class="timeline-badge"></div>
+                            <div class="action-step">
+                                <h4><i class="fas fa-lightbulb me-2"></i>Elaborazione Strategia</h4>
+                                <p>Definizione di un piano dettagliato di ottimizzazioni, con quantificazione degli impatti previsti su ciascun indicatore per il settore costruzioni.</p>
+                                <ul class="mt-2 mb-0">
+                                    <li>Simulazione di scenario conservativo e ottimistico</li>
+                                    <li>Analisi di sensitività parametrica</li>
+                                    <li>Stress testing degli interventi proposti</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item mb-4">
+                            <div class="timeline-badge"></div>
+                            <div class="action-step">
+                                <h4><i class="fas fa-tasks me-2"></i>Implementazione</h4>
+                                <p>Supporto nell'attuazione delle ottimizzazioni identificate, con particolare focus sul rispetto delle tempistiche di chiusura dell'esercizio.</p>
+                                <ul class="mt-2 mb-0">
+                                    <li>Roadmap implementativa in 3 fasi</li>
+                                    <li>Documentazione tecnica per ogni intervento</li>
+                                    <li>Coordinamento con commercialisti e revisori</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-badge"></div>
+                            <div class="action-step">
+                                <h4><i class="fas fa-chart-line me-2"></i>Monitoraggio e Valutazione</h4>
+                                <p>Verifica degli impatti conseguiti e supporto nella comunicazione finanziaria verso stakeholder interni ed esterni.</p>
+                                <ul class="mt-2 mb-0">
+                                    <li>Dashboard evoluta di KPI pre e post intervento</li>
+                                    <li>Monitoraggio trimestrale degli outcomes</li>
+                                    <li>Enhancement della disclosure informativa</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="cta-section py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="section-title text-center">Contatta il tuo referente Kitzanos</h2>
+                    <p class="lead">Scopri come Bilancio Plus può trasformare la presentazione finanziaria della tua impresa edile</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <div class="recommendation p-4">
+                                    <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>Perché scegliere Bilancio Plus per la tua impresa edile?</h5>
+                                    <p class="mb-0">Il servizio Bilancio Plus è ideale per le imprese di costruzioni che desiderano migliorare la propria presentazione finanziaria, ottimizzare gli indici di performance e rafforzare il proprio profilo di bancabilità, mantenendo la piena conformità ai principi contabili OIC e alla normativa vigente. Particolarmente efficace per aziende con modello di business su commessa.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <p class="mb-4">Per richiedere maggiori informazioni o prenotare una consulenza gratuita, contatta il tuo referente Kitzanos:</p>
+                                <a href="mailto:info@kitzanos.com" class="btn btn-success btn-lg contact-button px-5 py-3">
+                                    <i class="fas fa-envelope me-2"></i>Contatta il tuo referente
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center p-4">
+        <div class="container">
+            <div class="row align-items-center mb-3">
+                <div class="col-md-4">
+                    <div style="height: 35px; display: flex; align-items: center; justify-content: center;">
+                        <img src="assets/img/kitzanos_logo_scuro.png" alt="Logo" class="img-fluid company-logo" style="max-height: 100%; width: auto; filter: brightness(0) invert(1);">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-0">
+                        <a href="#features" class="text-white fw-bold">Caratteristiche</a> | 
+                        <a href="#benefits" class="text-white fw-bold">Vantaggi</a> | 
+                        <a href="#process" class="text-white fw-bold">Processo</a> | 
+                        <a href="#contact" class="text-white fw-bold">Contatti</a>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <a href="index.html" class="btn btn-outline-light">
+                        <i class="fas fa-chart-line me-2"></i>Torna alla home
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p class="mb-0 text-light">© <span id="currentYear">2025</span> powered by <span class="provider-name">Kitzanos Lab</span> | Tutti i diritti riservati</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Imposta anno corrente nel footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Funzione per la stampa
+        function printDocument() {
+            window.print();
+        }
+    </script>
+    
+    <scan-chat data-bot-id="2778f5c8-8cb8-45c0-a7bd-cf97b4ab0411"></scan-chat>
+    <script src="./js/bundle.js"></script>
+</body>
+</html>

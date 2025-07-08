@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circolante e Flussi di Cassa - Guglietta Global  S.p.A. | SCAN V12</title> <!-- Changed Company Name -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <link href="../css/print.css" rel="stylesheet" media="print">
+    <style>
+        /* Stili specifici V12 (possono andare in styles.css se usati altrove) */
+        .cycle-kpi { text-align: center; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--card-border); background-color: var(--white); margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.04);}
+        .cycle-kpi .kpi-label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 3px; }
+        .cycle-kpi .kpi-value-days-lg { font-size: 2.1rem; font-weight: 700; line-height: 1.1; }
+        .card-header-primary { background-color: rgba(25, 25, 112, 0.05); border-bottom: 1px solid rgba(25, 25, 112, 0.2); color: var(--primary); }
+        .card-header-secondary { background-color: rgba(74, 105, 189, 0.05); border-bottom: 1px solid rgba(74, 105, 189, 0.2); color: var(--secondary); }
+        .strategy-card { background-color: var(--white); border-left: 4px solid #4f6d7a; padding: 1.25rem; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+        .strategy-card h6 { color: #4f6d7a; margin-bottom: 0.75rem; font-weight: 600;}
+        .strategy-card ol { padding-left: 1.2rem; margin-bottom: 0; }
+        .strategy-card li { font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .report-section + .report-section { margin-top: 2.5rem; }
+        .waterfall-label { font-size: 0.75rem; text-align: center; color: var(--text-secondary); margin-top: -5px; }
+        /* Altri stili V9/V11 */
+        :root {
+            --primary: #191970; --secondary: #4a69bd; --success: #4CAF50;
+            --warning: #FFC107; --danger: #F44336; --info: #0dcaf0;
+            --light: #f8f9fa; --dark: #343a40; --white: #ffffff;
+            --text-primary: #212529; --text-secondary: #6c757d;
+            --card-bg: var(--white); --card-border: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        html, body { height: 100%; overflow-x: hidden; font-family: 'Titillium Web', sans-serif; background-color: #f4f8fb; }
+        body { display: flex; }
+        .sidebar { width: 250px; background-color: var(--primary); color: #e0e0e0; position: fixed; top: 0; bottom: 0; left: 0; z-index: 1031; display: flex; flex-direction: column; box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1); transition: width 0.3s ease; overflow-y: auto; }
+        .main-wrapper { margin-left: 250px; width: calc(100% - 250px); display: flex; flex-direction: column; min-height: 100vh; position: relative; padding-top: 70px; }
+        .dashboard-header { background-color: var(--white); padding: 15px 30px; border-bottom: 1px solid var(--card-border); box-shadow: 0 2px 5px rgba(0,0,0,0.05); min-height: 70px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 250px; right: 0; z-index: 1030; }
+        .dashboard-container { padding: 30px; flex-grow: 1; width: 100%; }
+        .footer { background-color: var(--primary); color: rgba(255, 255, 255, 0.7); padding: 15px 30px; font-size: 0.85rem; margin-top: auto; flex-shrink: 0; width: 100%; }
+        .footer img { max-height: 20px; width: auto; filter: brightness(0) invert(1); opacity: 0.8; vertical-align: middle;}
+        .sidebar-header { padding: 10px 20px; margin-bottom: 20px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .sidebar-header img { max-height: 40px; } .sidebar-header h5 { color: var(--white); margin-top: 10px; font-size: 1.1rem; font-weight: 600; }
+        .sidebar-nav { list-style: none; padding: 0; } .sidebar-nav .nav-item { margin: 0; }
+        .sidebar-nav .nav-link { color: #e0e0e0; padding: 12px 20px; display: flex; align-items: center; font-size: 0.95rem; font-weight: 500; border-left: 4px solid transparent; transition: all 0.2s ease; }
+        .sidebar-nav .nav-link:hover { background-color: rgba(255, 255, 255, 0.05); color: var(--white); border-left-color: var(--warning); }
+        .sidebar-nav .nav-link.active { background-color: rgba(255, 255, 255, 0.1); color: var(--white); font-weight: 600; border-left-color: var(--white); }
+        .sidebar-nav .nav-link i { margin-right: 15px; width: 20px; text-align: center; font-size: 1rem; }
+        .sidebar-nav .nav-title { padding: 10px 20px; font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; }
+        .sidebar-footer { margin-top: auto; padding: 15px 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.9rem; text-align: left; }
+        .section-title { color: var(--primary); font-weight: 600; margin-top: 2.5rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--secondary); font-size: 1.75rem; display: flex; align-items: center; } .section-title i { margin-right: 10px; }
+        .dashboard-card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); transition: all 0.3s ease; height: 100%; }
+        .dashboard-card:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.1); transform: translateY(-3px); }
+        .card-title-small { font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .table { border: 1px solid var(--card-border); margin-bottom: 1rem; } .table thead th { background-color: var(--light); color: var(--primary); font-weight: 600; border-bottom: 2px solid var(--primary); font-size: 0.9rem; white-space: nowrap; } .table-hover tbody tr:hover { background-color: #eef2f7; } .table td, .table th { vertical-align: middle; padding: 0.6rem 0.75rem; font-size: 0.9rem;} .value-highlight { font-weight: 600; color: var(--primary); } .text-end { text-align: right !important;} .text-success { color: var(--success) !important; } .text-danger { color: var(--danger) !important; } .text-warning { color: var(--warning) !important; } .text-secondary { color: var(--text-secondary) !important; }
+        .alert-box { padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid; } .alert-box h5 { margin-bottom: 10px; font-size: 1.1rem; font-weight: 600;} .alert-box ul { padding-left: 20px; margin-bottom: 0; font-size: 0.9rem;} .alert-box.alert-success { background-color: #d1e7dd; border-color: #a3cfbb; color: #0a3622; } .alert-box.alert-warning { background-color: #fff3cd; border-color: #ffda6a; color: #664d03; } .alert-box.alert-danger { background-color: #f8d7da; border-color: #f1aeb5; color: #58151c; } .alert-box.alert-info { background-color: #cff4fc; border-color: #9eeaf9; color: #055160; }
+        .status-badge { font-size: .75em; font-weight: 700; line-height: 1; padding: .35em .65em; border-radius: .375rem; color: white; display: inline-block; } .status-badge.bg-success { background-color: var(--success) !important; } .status-badge.bg-warning { background-color: var(--warning) !important; color: var(--dark) !important;} .status-badge.bg-danger { background-color: var(--danger) !important; } .status-badge.bg-info { background-color: var(--info) !important; color: var(--dark) !important;}
+        .chart-container { height: 300px; margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 8px; border: 1px solid var(--card-border); box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: relative; }
+        .icon-circle { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: white; margin-right: 12px; font-size: 0.9rem; flex-shrink: 0; }
+        .bg-icon-success { background-color: var(--success); } .bg-icon-warning { background-color: var(--warning); } .bg-icon-danger { background-color: var(--danger); } .bg-icon-info { background-color: #4f6d7a; } .bg-icon-primary { background-color: var(--primary); } .bg-icon-secondary { background-color: var(--secondary); }
+        @media (max-width: 991.98px) { .sidebar { width: 0; border: none; box-shadow: none;} .main-wrapper { margin-left: 0; width: 100%; padding-top: 56px; } .dashboard-header { left: 0; width: 100%; min-height: 56px; padding: 5px 15px;} .header-title h5 { font-size: 1rem;} .header-title p { font-size: 0.75rem;} .dashboard-container { padding: 15px;} .footer { padding: 10px 15px;} }
+        @media print { body { display: block; } .main-wrapper { margin-left: 0; width: 100%; padding-top: 0; } .no-print { display: none !important; } .report-section { page-break-inside: avoid; } }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar no-print">
+        <div class="sidebar-header"> <img src="../assets/img/logo_scan.png" alt="SCAN Logo" style="max-height: 40px;"> <h5>Guglietta Global  S.p.A.</h5> </div> <!-- Changed Name -->
+        <ul class="sidebar-nav flex-grow-1">
+            <li class="nav-item"> <a class="nav-link" href="../dashboard_v2.html"> <i class="fas fa-tachometer-alt fa-fw"></i> Dashboard </a> </li> <!-- Adjusted Path -->
+            <li class="nav-title">Analisi Dettagliata</li>
+            <li class="nav-item"> <a class="nav-link" href="parte1_sintesi.html"> <i class="fas fa-file-alt fa-fw"></i> Sintesi e Profilo </a> </li> <!-- Adjusted Paths -->
+            <li class="nav-item"> <a class="nav-link" href="parte2_economico.html"> <i class="fas fa-balance-scale fa-fw"></i> Analisi Economica </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="parte3_patrimoniale.html"> <i class="fas fa-landmark fa-fw"></i> Analisi Patrimoniale </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="parte4_bancabilita.html"> <i class="fas fa-university fa-fw"></i> Bancabilità </a> </li>
+            <li class="nav-item"> <a class="nav-link active" href="parte5_circolante_flussi.html"> <i class="fas fa-sync-alt fa-fw"></i> Circolante e Flussi </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="parte6_rischi-raccomandazioni.html"> <i class="fas fa-exclamation-triangle fa-fw"></i> Rischi e Azioni </a> </li>
+            <li class="nav-title">Approfondimenti</li>
+            <li class="nav-item"> <a class="nav-link" href="irp_dettaglio.html"> <i class="fas fa-shield-alt fa-fw"></i> Dettaglio IRP </a> </li>
+            <!-- Removed Bilancio Plus Link -->
+        </ul>
+        <div class="sidebar-footer"> <small>SCAN360 © <span id="currentYearSidebar"></span> Kitzanos</small> </div>
+    </aside>
+
+    <!-- Contenuto Principale Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header Orizzontale -->
+        <header class="dashboard-header no-print">
+            <div class="header-title">
+                <h5 class="mb-0">Report Dettagliato: Analisi Circolante e Flussi</h5>
+                <p class="mb-0">Guglietta Global  S.p.A. | <span class="report-date">31 Dicembre 2024</span></p> <!-- Changed Name -->
+            </div>
+            <div class="header-controls d-flex align-items-center">
+                <span id="irp-header-badge" class="badge me-3"></span> <!-- Badge IRP -->
+                <button class="btn btn-sm btn-outline-secondary me-2 print-button" onclick="printDocument()"> <i class="fas fa-print"></i> Stampa </button>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light border dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fas fa-user-circle me-1"></i> Guglietta Global  S.p.A. </button> <!-- Changed Name -->
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton"> <li><button class="dropdown-item" type="button" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li> </ul>
+                </div>
+            </div>
+        </header>
+        <div class="container d-none d-print-block mt-4 mb-4">
+            <h1 class="text-center mb-0"><span class="company-name">Guglietta Global  S.p.A.</span></h1> <!-- Changed Name -->
+            <p class="text-center mb-0">Report Dettagliato: Analisi Circolante e Flussi | <span class="report-date">31 Dicembre 2024</span></p>
+            <hr>
+        </div>
+
+        <!-- Area Contenuto Specifico del Report -->
+        <div class="dashboard-container">
+
+            <!-- ================================================================ -->
+            <!-- CONTENUTO SPECIFICO PARTE 5 - V12 - Updated for Guglietta Global  -->
+            <!-- ================================================================ -->
+
+            <h2 class="section-title" id="capital"><i class="fas fa-sync-alt me-2"></i>5.1 ANALISI CAPITALE CIRCOLANTE</h2>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-primary"><h5 class="mb-0">Sintesi Ciclo Capitale Circolante</h5></div>
+                 <div class="card-body">
+                     <p>Il ciclo del capitale circolante (CCC) evidenzia un significativo peggioramento nel 2024, principalmente dovuto all'aumento delle scorte. Al 12/2024, il CCC è di <strong>57 giorni</strong>.</p> <!-- Updated Text -->
+                     <div class="row gy-3 mt-4 mb-4">
+                         <div class="col-md-3 col-6"> <div class="cycle-kpi border-success"> <span class="kpi-label">DSO (Clienti)</span> <span class="kpi-value-days-lg text-success">62</span> </div> </div> <!-- DSO Updated -->
+                         <div class="col-md-3 col-6"> <div class="cycle-kpi border-danger"> <span class="kpi-label">DIO (Magazzino)</span> <span class="kpi-value-days-lg text-danger">84</span> </div> </div> <!-- DIO Updated -->
+                         <div class="col-md-3 col-6"> <div class="cycle-kpi border-warning"> <span class="kpi-label">DPO (Fornitori)</span> <span class="kpi-value-days-lg text-warning">89</span> </div> </div> <!-- DPO Updated -->
+                          <div class="col-md-3 col-6"> <div class="cycle-kpi border-danger bg-light"> <span class="kpi-label">Ciclo Circolante</span> <span class="kpi-value-days-lg text-danger">57</span> </div> </div> <!-- CCC Updated -->
+                     </div>
+                     <p class="small">Il ciclo positivo di 57 giorni (+35gg vs 2023) indica un <strong>maggior fabbisogno finanziario</strong> generato dalla gestione operativa, principalmente a causa dell'allungamento dei tempi di magazzino.</p> <!-- Updated Text -->
+
+                     <h6 class="mt-4 card-title-small">TREND CICLO CIRCOLANTE 2022-2024 (GIORNI - Guglietta Global )</h6>
+                     <!-- Updated Trend Table -->
+                     <div class="table-responsive">
+                         <table class="table table-sm table-striped table-hover caption-top">
+                             <caption class="small text-muted"></caption>
+                             <thead class="table-light"><tr><th>Componente</th><th class="text-end">12/2022</th><th class="text-end">12/2023</th><th class="text-end">12/2024</th><th>Trend</th></tr></thead>
+                             <tbody>
+                                 <tr><td>DSO (giorni)</td><td class="text-end">68</td><td class="text-end">67</td><td class="text-end">62</td><td class="text-success">Miglioramento ↓</td></tr>
+                                 <tr><td>DIO (giorni)</td><td class="text-end">60</td><td class="text-end">50</td><td class="text-end">84</td><td class="text-danger">Peggioramento ↑↑</td></tr>
+                                 <tr><td>DPO (giorni)</td><td class="text-end">108</td><td class="text-end">95</td><td class="text-end">89</td><td class="text-success">Diminuzione ↓</td></tr>
+                                 <tr class="table-danger fw-bold"><td>Ciclo Circolante</td><td class="text-end">20</td><td class="text-end">22</td><td class="text-end">57</td><td class="text-danger">Peggioramento ↑↑</td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+            </div>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-secondary"><h5 class="mb-0">Analisi Dettagliata Giorni e Test di Congruità</h5></div>
+                 <div class="card-body">
+                      <div class="row mb-4">
+                          <div class="col-lg-7 mb-3 mb-lg-0">
+                              <h6 class="text-center small">Grafico 5.1: Ciclo Capitale Circolante vs Benchmark (Giorni - Guglietta Global )</h6>
+                               <div class="chart-container" style="height: 320px;"> <canvas id="workingCapitalCycleChart"></canvas> </div>
+                          </div>
+                          <div class="col-lg-5 d-flex flex-column justify-content-center">
+                                <div class="alert-box alert-danger p-3 mb-3"> <!-- Changed to Danger -->
+                                     <h6 class="mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Analisi Ciclo (57 giorni)</h6>
+                                     <p class="small mb-0">Significativo peggioramento (+35gg vs 2023) causa aumento DIO.</p> <!-- Updated Text -->
+                                </div>
+                                 <div class="alert-box alert-warning p-3 small">
+                                    <h6 class="mb-2"><i class="fas fa-info-circle me-2"></i>Componenti Chiave 2024:</h6>
+                                    <!-- Updated Commentary -->
+                                    <ul class="list-unstyled mb-0">
+                                        <li><strong class="text-success">DSO (62gg):</strong> Buono e in miglioramento (<65gg).</li>
+                                        <li><strong class="text-danger">DIO (84gg):</strong> Critico, forte aumento (+34gg).</li>
+                                        <li><strong class="text-warning">DPO (89gg):</strong> Rientrato vs 2023, ma sotto benchmark (95gg).</li>
+                                    </ul>
+                                </div>
+                          </div>
+                      </div>
+                      <hr class="my-4">
+                       <h6 class="mt-4 mb-3"><i class="fas fa-balance-scale me-1"></i> Test di Congruità Componenti (2024 - Guglietta Global )</h6>
+                       <!-- Updated Congruity Tests -->
+                       <div class="row gy-4">
+                           <!-- Test Crediti -->
+                           <div class="col-lg-4 col-md-6">
+                               <div class="dashboard-card h-100 border-success"> <!-- Changed to Success -->
+                                   <h6 class="card-title-small text-success"><i class="fas fa-file-invoice-dollar me-1"></i> Crediti (DSO)</h6>
+                                   <ul class="list-unstyled small mb-0">
+                                       <li>Valore: € 2,30M</li>
+                                       <li>DSO Effettivo: <strong>62 gg</strong></li>
+                                       <li>DSO Normale: 65 gg</li>
+                                       <li class="mt-2 border-top pt-2">Giorni Eccesso: <strong class="text-success">-3 gg</strong></li>
+                                       <li>Capitale Liberato: <strong class="text-success">~€ 112 K</strong></li>
+                                   </ul>
+                               </div>
+                           </div>
+                            <!-- Test Debiti -->
+                           <div class="col-lg-4 col-md-6">
+                               <div class="dashboard-card h-100 border-danger"> <!-- Changed to Danger (paying faster) -->
+                                   <h6 class="card-title-small text-danger"><i class="fas fa-truck me-1"></i> Debiti (DPO)</h6>
+                                    <ul class="list-unstyled small mb-0">
+                                       <li>Valore: € 2,44M</li>
+                                       <li>DPO Effettivo: <strong>89 gg</strong></li>
+                                       <li>DPO Standard: 95 gg</li>
+                                       <li class="mt-2 border-top pt-2">Giorni Eccesso: <strong class="text-danger">-6 gg</strong></li>
+                                       <li>Finanz. Mancante: <strong class="text-danger">~€ 93 K</strong></li>
+                                   </ul>
+                               </div>
+                           </div>
+                            <!-- Test Magazzino -->
+                           <div class="col-lg-4 col-md-12"> <!-- Occupa tutta larghezza su md -->
+                               <div class="dashboard-card h-100 border-danger"> <!-- Changed to Danger -->
+                                    <h6 class="card-title-small text-danger"><i class="fas fa-boxes me-1"></i> Magazzino (DIO)</h6>
+                                     <ul class="list-unstyled small mb-0">
+                                       <li>Valore: € 1,30M</li>
+                                       <li>DIO Effettivo: <strong>84 gg</strong></li>
+                                       <li>DIO Standard: 70 gg</li>
+                                       <li class="mt-2 border-top pt-2">Giorni Eccesso: <strong class="text-danger">+14 gg</strong></li>
+                                       <li>Valore Immobilizzato: <strong class="text-danger">~€ 217 K</strong></li>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                        <div class="alert-box alert-danger small mt-4 p-2"> <!-- Changed to Danger -->
+                           <strong>Analisi Dettagliata:</strong> Il ciclo di 57gg richiede un fabbisogno finanziario stimato di ~€882K. La criticità è l'aumento del DIO (84gg) che immobilizza €217K. Il DPO (89gg) è sotto benchmark, riducendo il finanziamento ottenibile. DSO (62gg) è un punto di forza. <!-- Updated Text -->
+                       </div>
+                       <hr class="my-4">
+                        <h6 class="mt-4 mb-3"><i class="fas fa-lightbulb me-1"></i> Strategie di Miglioramento e Impatto Finanziario Atteso (Guglietta Global )</h6>
+                         <!-- Updated Strategies -->
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <div class="strategy-card h-100">
+                                    <h6><i class="fas fa-boxes me-1"></i> Magazzino</h6> <!-- Changed Focus -->
+                                     <ol> <li>Implementare JIT</li> <li>Analisi ABC scorte</li> <li>Accordi progr. fornitori</li> </ol>
+                                     <p class="fw-bold text-success mt-2 mb-0">Impatto Netto: +€217K</p>
+                                      <small class="text-muted">(Target DIO 70gg)</small>
+                                 </div>
+                             </div>
+                              <div class="col-md-4">
+                                  <div class="strategy-card h-100">
+                                     <h6><i class="fas fa-truck me-1"></i> Debiti Fornitori</h6> <!-- Changed Focus -->
+                                      <ol> <li>Rinegoziazione termini</li> <li>Allineamento a benchmark</li> <li>Centralizzazione pagamenti</li> </ol>
+                                      <p class="fw-bold text-success mt-2 mb-0">Impatto Netto: +€93K</p>
+                                      <small class="text-muted">(Target DPO 95gg)</small>
+                                  </div>
+                              </div>
+                               <div class="col-md-4">
+                                  <div class="strategy-card h-100">
+                                      <h6><i class="fas fa-hand-holding-usd me-1"></i> Crediti Clienti</h6> <!-- Changed Focus -->
+                                       <ol> <li>Mantenere policy attuali</li> <li>Monitoraggio costante aging</li> <li>Valutazione preventiva</li> </ol>
+                                       <p class="fw-bold text-success mt-2 mb-0">Impatto Netto: €0</p>
+                                       <small class="text-muted">(Mantenimento vantaggio ~€112K)</small>
+                                  </div>
+                              </div>
+                         </div>
+                         <div class="alert-box alert-success text-center mt-4">
+                              <strong>Impatto Complessivo Stimato (Liquidità Netta): +€ 310.000</strong> <!-- Updated Value -->
+                         </div>
+                 </div>
+            </div>
+
+            <h2 class="section-title mt-5" id="cashflow"><i class="fas fa-stream me-2"></i>5.2 ANALISI FLUSSI DI CASSA</h2>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-primary"><h5 class="mb-0">Analisi Flussi di Cassa (da EBITDA a Variazione Netta Cassa) - 2024</h5></div>
+                 <div class="card-body">
+                     <p>Analisi della capacità aziendale di generare liquidità e della sua destinazione.</p>
+                     <div class="row">
+                        <div class="col-lg-7 mb-3 mb-lg-0">
+                             <h6 class="text-center small">Grafico 5.2: Composizione Flussi di Cassa 2024 (Waterfall Semplificato - Guglietta Global )</h6>
+                            <div class="chart-container" style="height: 400px;"> <canvas id="cashFlowWaterfallChart"></canvas> </div>
+                        </div>
+                        <div class="col-lg-5">
+                             <h6 class="mt-1">Tabella 5.1: Dettaglio Flussi 2024 (€ - Guglietta Global )</h6>
+                             <!-- Updated Table Data -->
+                             <div class="table-responsive">
+                                 <table class="table table-sm table-striped table-hover">
+                                      <thead class="table-light"><tr><th>Voce</th><th class="text-end">Valore</th><th class="text-end">% Ricavi</th></tr></thead>
+                                      <tbody>
+                                          <tr><td>EBITDA</td><td class="text-end">2.866.018</td><td class="text-end">21,3%</td></tr>
+                                          <tr><td><i class="fas fa-minus-circle text-danger fa-fw me-1"></i> Imposte</td><td class="text-end text-danger">(411.492)</td><td class="text-end">-3,1%</td></tr>
+                                          <tr><td><i class="fas fa-minus-circle text-danger fa-fw me-1"></i> Variazione Cap. Circ. Op.</td><td class="text-end text-danger">(810.000)</td><td class="text-end">-6,0%</td></tr> <!-- Approx from narrative -->
+                                          <tr class="table-secondary fw-bold"><td><i class="fas fa-equals fa-fw me-1"></i> Cash Flow Operativo</td><td class="text-end">1.644.834</td><td class="text-end">12,3%</td></tr>
+                                          <tr><td><i class="fas fa-minus-circle text-danger fa-fw me-1"></i> Cash Flow Investimenti</td><td class="text-end text-danger">(1.595.041)</td><td class="text-end">-11,9%</td></tr>
+                                          <tr class="table-secondary fw-bold"><td><i class="fas fa-equals fa-fw me-1"></i> Free Cash Flow (FCF)</td><td class="text-end">49.793</td><td class="text-end">0,4%</td></tr>
+                                          <tr><td><i class="fas fa-plus-circle text-success fa-fw me-1"></i> Variazione Debiti Fin.</td><td class="text-end text-danger">(207.489)</td><td class="text-end">-1,5%</td></tr> <!-- Negative value = outflow = debt reduction -->
+                                          <tr><td><i class="fas fa-minus-circle text-warning fa-fw me-1"></i> Variazione Patrimonio Netto</td><td class="text-end text-warning">(296.997)</td><td class="text-end">-2,2%</td></tr> <!-- Prob. Dividendi -->
+                                          <tr class="table-danger fw-bold"><td><i class="fas fa-equals fa-fw me-1"></i> Variazione Netta Cassa</td><td class="text-end text-danger">(454.693)</td><td class="text-end">-3,4%</td></tr>
+                                      </tbody>
+                                 </table>
+                                 <p class="small text-muted mt-1 mb-0">*Fonte: Report Leanus / Analisi Flussi</p>
+                             </div>
+                        </div>
+                     </div>
+                     <h6 class="mt-4">Analisi Flussi di Cassa 2024 (Guglietta Global ):</h6>
+                     <!-- Updated Commentary -->
+                      <div class="alert-box alert-info small">
+                         <ul class="mb-0">
+                            <li><strong>Ottima generazione cassa op. (12,3%):</strong> Nonostante assorbimento da circolante (-€0.8M).</li>
+                            <li><strong>Forte assorbimento investimenti (-€1.6M):</strong> Indica ciclo investimenti importante (97% CF Op.).</li>
+                            <li><strong>FCF quasi nullo (€50K):</strong> Positivo ma marginale causa investimenti.</li>
+                            <li><strong>Riduzione Debito (-€207K) e Dividendi (-€297K):</strong> Causano Δ Cassa Netta Negativa (-€455K).</li>
+                        </ul>
+                      </div>
+                 </div>
+            </div>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-secondary"><h5 class="mb-0">Trend Triennale e Proiezioni dei Flussi di Cassa</h5></div>
+                 <div class="card-body">
+                      <div class="row">
+                          <div class="col-lg-7 mb-3 mb-lg-0">
+                               <h6 class="text-center small">Grafico 5.3: Evoluzione Flussi di Cassa 2022-2024 (€ - Guglietta Global )</h6>
+                               <div class="chart-container" style="height: 320px;"> <canvas id="cashFlowTrendChart"></canvas> </div>
+                          </div>
+                           <div class="col-lg-5">
+                              <h6 class="mt-1">Interpretazione Trend (Guglietta Global ):</h6>
+                              <!-- Updated Commentary -->
+                               <ul class="small list-unstyled">
+                                  <li><i class="fas fa-sync-alt text-primary me-1"></i> CF Operativo volatile ma positivo.</li>
+                                  <li><i class="fas fa-chart-line text-danger me-1"></i> Investimenti ciclici (picco '22, ripresa '24).</li>
+                                  <li><i class="fas fa-exchange-alt text-success me-1"></i> Gestione Debito: Rimborso costante '23-'24.</li>
+                                  <li><i class="fas fa-donate text-warning me-1"></i> Dividendi stabili (~€300K).</li>
+                                  <li><i class="fas fa-arrow-down text-danger me-1"></i> Variazione Netta Cassa: Positiva '22-'23, Negativa '24.</li>
+                               </ul>
+                          </div>
+                      </div>
+                       <hr class="my-4">
+                       <div class="row">
+                           <div class="col-lg-7 mb-3 mb-lg-0">
+                               <h6 class="text-center small">Grafico 5.4: Proiezioni Finanziarie 2024-2028 (€ - Guglietta Global )</h6>
+                                <div class="chart-container" style="height: 320px;"> <canvas id="cashFlowProjectionChart"></canvas> </div>
+                           </div>
+                            <div class="col-lg-5">
+                                <h6 class="mt-1">Analisi Proiezioni (Fonte Leanus - Guglietta Global ):</h6>
+                                <!-- Updated Commentary -->
+                                <ul class="small list-unstyled">
+                                   <li><i class="fas fa-arrow-up text-success me-1"></i> CF Operativo in crescita (~€2.0M/a).</li>
+                                   <li><i class="fas fa-ban text-warning me-1"></i> Investimenti: Nessuno significativo nel piano base.</li>
+                                   <li><i class="fas fa-arrow-down text-success me-1"></i> Riduzione progressiva PFN.</li>
+                                   <li><i class="fas fa-coins text-success me-1"></i> Forte accumulo liquidità (€7.7M / '28).</li>
+                                   <li><i class="fas fa-check-circle text-success me-1"></i> DSCR Prospettico: 4,477 (Eccellente).</li>
+                                   <li><i class="fas fa-check-circle text-success me-1"></i> PFN Negativa (Cash Positive) da 2025.</li>
+                                </ul>
+                                 <div class="alert alert-info small p-2 mt-2"> Forte potenziale accumulo liquidità per investimenti/remunerazione. Necessario piano allocazione capitale.</div>
+                            </div>
+                       </div>
+                         <h6 class="mt-4">Suggerimenti Operativi per Miglioramento Flussi (Guglietta Global )</h6>
+                         <!-- Updated Suggestions -->
+                          <div class="table-responsive small">
+                            <table class="table table-sm table-striped table-hover">
+                               <thead class="table-light"><tr><th>Area</th><th>Azione Suggerita</th><th>Impatto Quantitativo Annuo</th></tr></thead>
+                               <tbody>
+                                   <tr><td>Gestione Operativa</td><td>Ottimizzazione costi fissi/variabili</td><td class="text-success">+€370K CF Op. (Target 15%)</td></tr>
+                                   <tr><td>Gestione Investimenti</td><td>Sviluppo piano investimenti strategici</td><td class="text-success">+€240K CF (ROI 12%, da '26)</td></tr>
+                                   <tr><td>Gestione Finanziaria</td><td>Valutazione refinancing debito</td><td class="text-success">+€17K Oneri Fin. (-20%)</td></tr>
+                                   <tr><td>Politica Dividendi</td><td>Formalizzazione policy (40-50% Utile)</td><td>Prevedibilità per soci</td></tr>
+                                   <tr><td>Pianificazione Tesoreria</td><td>Budget tesoreria, cash pooling</td><td class="text-success">+€30K Ottimizz. Liq. (5%)</td></tr>
+                                   <tr class="table-primary fw-bold"><td>Complessivo</td><td>Implementazione integrata</td><td>Miglioramento FCF/ROE</td></tr>
+                               </tbody>
+                            </table>
+                        </div>
+                 </div>
+            </div>
+
+            <!-- ================================================================ -->
+            <!-- FINE CONTENUTO SPECIFICO PARTE 5 -->
+            <!-- ================================================================ -->
+
+        </div> <!-- /dashboard-container -->
+
+        <!-- Footer Standard V2 (Corretto) -->
+        <footer class="footer no-print"> <div class="container-fluid px-4"> <div class="row align-items-center"> <div class="col-md-6 text-center text-md-start mb-2 mb-md-0"> SCAN360 © <span id="currentYearFooterReport"></span> </div> <div class="col-md-6 text-center text-md-end"> Powered by <a href="http://www.kitzanos.com" target="_blank" class="text-white fw-bold">Kitzanos Lab</a> <img src="../assets/img/logo_kitzanos.png" alt="Kitzanos Logo" class="ms-2"> </div> </div> </div> </footer>
+
+    </div> <!-- /main-wrapper -->
+
+    <!-- Script JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/charts_config.js"></script>
+    <script src="../js/report_init.js"></script>
+     <script>
+        document.getElementById('currentYearSidebar').textContent = new Date().getFullYear();
+        document.getElementById('currentYearFooterReport').textContent = new Date().getFullYear();
+
+         // Script aggiornamento badge IRP header (Updated for Guglietta Global )
+         document.addEventListener('DOMContentLoaded', function() {
+             const irpScoreValue = 82.03; // Updated IRP Value
+             const irpHeaderBadge = document.getElementById('irp-header-badge');
+             if(irpHeaderBadge) {
+                 let badgeClass = 'bg-warning text-dark';
+                 if (irpScoreValue >= 71) badgeClass = 'bg-success'; // Basso
+                 else if (irpScoreValue < 51) badgeClass = 'bg-danger'; // Alto
+                 irpHeaderBadge.className = `badge ${badgeClass} me-3`;
+                 irpHeaderBadge.textContent = `IRP: ${irpScoreValue.toFixed(1)}`;
+             }
+
+              // Ensure logout function is defined
+             if (typeof logout !== 'function') {
+                 window.logout = function() {
+                    console.log("Logout action triggered (placeholder)");
+                }
+             }
+             // Ensure print function is defined
+             if (typeof printDocument !== 'function') {
+                window.printDocument = function() {
+                    window.print();
+                }
+             }
+             
+             // Working Capital Cycle Chart
+             const wcCtx = document.getElementById('workingCapitalCycleChart').getContext('2d');
+             new Chart(wcCtx, {
+                 type: 'bar',
+                 data: {
+                     labels: ['DSO (Crediti)', 'DIO (Magazzino)', 'DPO (Fornitori)', 'Ciclo Circolante'],
+                     datasets: [
+                         {
+                             label: 'Guglietta Global  2024',
+                             data: [62, 84, 89, 57],
+                             backgroundColor: ['rgba(40, 167, 69, 0.6)', 'rgba(220, 53, 69, 0.6)', 'rgba(255, 193, 7, 0.6)', 'rgba(220, 53, 69, 0.6)'],
+                             borderColor: ['rgb(40, 167, 69)', 'rgb(220, 53, 69)', 'rgb(255, 193, 7)', 'rgb(220, 53, 69)'],
+                             borderWidth: 1
+                         },
+                         {
+                             label: 'Benchmark Settore',
+                             data: [65, 70, 95, 40],
+                             backgroundColor: 'rgba(0, 0, 0, 0)',
+                             borderColor: '#6c757d',
+                             borderWidth: 2,
+                             type: 'line',
+                             pointRadius: 6,
+                             pointHoverRadius: 8
+                         }
+                     ]
+                 },
+                 options: {
+                     responsive: true,
+                     maintainAspectRatio: false,
+                     plugins: {
+                         legend: {
+                             position: 'top',
+                             align: 'end'
+                         },
+                         tooltip: {
+                             callbacks: {
+                                 label: function(context) {
+                                     return `${context.dataset.label}: ${context.raw} giorni`;
+                                 }
+                             }
+                         }
+                     },
+                     scales: {
+                         y: {
+                             beginAtZero: true,
+                             title: {
+                                 display: true,
+                                 text: 'Giorni'
+                             }
+                         }
+                     }
+                 }
+             });
+             
+             // Cash Flow Waterfall Chart
+             const cfwCtx = document.getElementById('cashFlowWaterfallChart').getContext('2d');
+             new Chart(cfwCtx, {
+                 type: 'bar',
+                 data: {
+                     labels: ['EBITDA', 'Imposte', 'Var. Cap. Circ.', 'CF Operativo', 'Investimenti', 'FCF', 'Var. Debiti', 'Var. PN', 'Δ Cassa'],
+                     datasets: [{
+                         data: [2866018, -411492, -810000, 1644834, -1595041, 49793, -207489, -296997, -454693],
+                         backgroundColor: [
+                             'rgba(40, 167, 69, 0.6)',  // EBITDA - green
+                             'rgba(220, 53, 69, 0.6)',  // Imposte - red
+                             'rgba(220, 53, 69, 0.6)',  // Var Cap Circ - red
+                             'rgba(25, 25, 112, 0.6)',  // CF Operativo - primary
+                             'rgba(220, 53, 69, 0.6)',  // Investimenti - red
+                             'rgba(74, 105, 189, 0.6)', // FCF - secondary
+                             'rgba(220, 53, 69, 0.6)',  // Var. Debiti - red (debt reduction)
+                             'rgba(255, 193, 7, 0.6)',  // Var. PN - warning (dividends)
+                             'rgba(220, 53, 69, 0.6)'   // Δ Cassa - red (negative)
+                         ],
+                         borderColor: [
+                             'rgb(40, 167, 69)',
+                             'rgb(220, 53, 69)',
+                             'rgb(220, 53, 69)',
+                             'rgb(25, 25, 112)',
+                             'rgb(220, 53, 69)',
+                             'rgb(74, 105, 189)',
+                             'rgb(220, 53, 69)',
+                             'rgb(255, 193, 7)',
+                             'rgb(220, 53, 69)'
+                         ],
+                         borderWidth: 1
+                     }]
+                 },
+                 options: {
+                     responsive: true,
+                     maintainAspectRatio: false,
+                     plugins: {
+                         legend: {
+                             display: false
+                         },
+                         tooltip: {
+                             callbacks: {
+                                 label: function(context) {
+                                     let value = context.raw;
+                                     return `€ ${value.toLocaleString('it-IT')}`;
+                                 }
+                             }
+                         }
+                     },
+                     scales: {
+                         y: {
+                             beginAtZero: false,
+                             title: {
+                                 display: true,
+                                 text: 'Euro (€)'
+                             }
+                         }
+                     }
+                 }
+             });
+             
+             // Cash Flow Trend Chart
+             const cftCtx = document.getElementById('cashFlowTrendChart').getContext('2d');
+             new Chart(cftCtx, {
+                 type: 'line',
+                 data: {
+                     labels: ['2022', '2023', '2024'],
+                     datasets: [
+                         {
+                             label: 'CF Operativo',
+                             data: [1200000, 1450000, 1644834],
+                             borderColor: 'rgb(25, 25, 112)',
+                             backgroundColor: 'rgba(25, 25, 112, 0.1)',
+                             borderWidth: 2,
+                             fill: false,
+                             tension: 0.1
+                         },
+                         {
+                             label: 'CF Investimenti',
+                             data: [-2100000, -800000, -1595041],
+                             borderColor: 'rgb(220, 53, 69)',
+                             backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                             borderWidth: 2,
+                             fill: false,
+                             tension: 0.1
+                         },
+                         {
+                             label: 'Var. Debiti Fin.',
+                             data: [-180000, -210000, -207489],
+                             borderColor: 'rgb(255, 193, 7)',
+                             backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                             borderWidth: 2,
+                             fill: false,
+                             tension: 0.1
+                         },
+                         {
+                             label: 'Var. Netta Cassa',
+                             data: [620000, 140000, -454693],
+                             borderColor: 'rgb(40, 167, 69)',
+                             backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                             borderWidth: 3,
+                             fill: false,
+                             tension: 0.1
+                         }
+                     ]
+                 },
+                 options: {
+                     responsive: true,
+                     maintainAspectRatio: false,
+                     plugins: {
+                         legend: {
+                             position: 'top',
+                         },
+                         tooltip: {
+                             callbacks: {
+                                 label: function(context) {
+                                     let value = context.raw;
+                                     return `${context.dataset.label}: € ${value.toLocaleString('it-IT')}`;
+                                 }
+                             }
+                         }
+                     },
+                     scales: {
+                         y: {
+                             title: {
+                                 display: true,
+                                 text: 'Euro (€)'
+                             }
+                         }
+                     }
+                 }
+             });
+             
+             // Cash Flow Projection Chart
+             const cfpCtx = document.getElementById('cashFlowProjectionChart').getContext('2d');
+             new Chart(cfpCtx, {
+                 type: 'line',
+                 data: {
+                     labels: ['2024', '2025', '2026', '2027', '2028'],
+                     datasets: [
+                         {
+                             label: 'CF Operativo',
+                             data: [1644834, 1800000, 1950000, 2100000, 2200000],
+                             borderColor: 'rgb(25, 25, 112)',
+                             backgroundColor: 'rgba(25, 25, 112, 0.1)',
+                             borderWidth: 2,
+                             fill: false,
+                             tension: 0.1
+                         },
+                         {
+                             label: 'PFN',
+                             data: [1200000, 600000, -400000, -1500000, -2800000],
+                             borderColor: 'rgb(220, 53, 69)',
+                             backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                             borderWidth: 2,
+                             fill: false,
+                             tension: 0.1
+                         },
+                         {
+                             label: 'Liquidità Cumulata',
+                             data: [800000, 1900000, 3400000, 5500000, 7700000],
+                             borderColor: 'rgb(40, 167, 69)',
+                             backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                             borderWidth: 3,
+                             fill: true,
+                             tension: 0.1
+                         }
+                     ]
+                 },
+                 options: {
+                     responsive: true,
+                     maintainAspectRatio: false,
+                     plugins: {
+                         legend: {
+                             position: 'top',
+                         },
+                         tooltip: {
+                             callbacks: {
+                                 label: function(context) {
+                                     let value = context.raw;
+                                     return `${context.dataset.label}: € ${value.toLocaleString('it-IT')}`;
+                                 }
+                             }
+                         }
+                     },
+                     scales: {
+                         y: {
+                             title: {
+                                 display: true,
+                                 text: 'Euro (€)'
+                             }
+                         }
+                     }
+                 }
+             });
+         });
+  </script>
+<scan-chat data-bot-id="2778f5c8-8cb8-45c0-a7bd-cf97b4ab0411"></scan-chat>
+<script src="../js/bundle.js"></script>
+</body>
+</html>

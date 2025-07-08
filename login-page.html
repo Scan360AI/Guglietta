@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pagina di accesso a SCAN360 - Strategic Corporate Analysis Navigator">
+    <title>Login - SCAN360</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+     <style>
+        /* Stili aggiuntivi specifici per login */
+        html, body { height: 100%; }
+        body { display: flex; align-items: center; padding-top: 40px; padding-bottom: 40px; background-color: #eef2f7; }
+        .login-container { max-width: 450px; margin: auto; }
+        .login-card-header { background-color: var(--primary); color: white; border-radius: 8px 8px 0 0 !important; padding: 1rem 1.5rem; }
+        .login-btn { background-color: var(--primary); border-color: var(--primary); padding: 0.75rem 1.5rem; font-weight: 600; color: white !important;}
+        .login-btn:hover { background-color: #13134f; border-color: #13134f; }
+        .powered-by img { max-height: 25px; filter: grayscale(50%);}
+        .watermark-login { text-align: center; margin-top: 20px; color: #6c757d; font-size: 0.8rem; }
+     </style>
+</head>
+<body>
+    <div class="login-container w-100">
+        <div class="card shadow-lg">
+            <div class="card-header text-center login-card-header">
+                <h4 class="mb-0">SCAN360</h4>
+                <small>Strategic Corporate Analysis Navigator</small>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <h5 class="fw-bold">Accesso Riservato</h5>
+                </div>
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="username" placeholder="Username" required value="AdminGuglietta"> <!-- Precompilato per demo -->
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" placeholder="Password" required value="Guglietta2025"> <!-- Precompilato per demo -->
+                        </div>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn login-btn">Accedi <i class="fas fa-sign-in-alt ms-1"></i></button>
+                    </div>
+                </form>
+                <div class="powered-by d-flex justify-content-center align-items-center mt-4 pt-3 border-top">
+                    <span class="me-2 text-muted small">Powered by</span>
+                    <img src="assets/img/logo_kitzanos.png" alt="Kitzanos Logo"> <!-- Assicurati che il path sia corretto -->
+                </div>
+            </div>
+        </div>
+         <div class="watermark-login">
+             SCAN360 © <span id="currentYearLogin"></span> Kitzanos Lab
+         </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        document.getElementById('currentYearLogin').textContent = new Date().getFullYear();
+        const loginForm = document.getElementById('loginForm');
+        if(loginForm) {
+            loginForm.addEventListener('submit', handleLogin); // Usa la funzione da common.js
+        }
+    </script>
+    <scan-chat data-bot-id="2778f5c8-8cb8-45c0-a7bd-cf97b4ab0411"></scan-chat>
+    <script src="./js/bundle.js"></script>
+</body>
+</html>

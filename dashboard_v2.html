@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Moderna - Guglietta Global S.p.A. | SCAN - Guglietta Global S.p.A.</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet"> <!-- Include stili V2 -->
+    <link href="css/print.css" rel="stylesheet" media="print">
+</head>
+<body>
+
+    <!-- Sidebar Verticale Fissa -->
+    <aside class="sidebar no-print">
+        <div class="sidebar-header">
+            <!-- Inserisci qui il logo se desiderato -->
+             <img src="assets/img/logo_scan.png" alt="Guglietta Global S.p.A. Logo" style="max-height: 40px;">
+            <h5>Guglietta Global S.p.A.</h5>
+        </div>
+
+        <ul class="sidebar-nav flex-grow-1">
+            <li class="nav-title">Menu Principale</li>
+            <li class="nav-item">
+                <a class="nav-link active" href="dashboard_v2.html">
+                    <i class="fas fa-tachometer-alt fa-fw"></i> Dashboard
+                </a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="#kpi-section"> <!-- Link a sezione KPI -->
+                    <i class="fas fa-key fa-fw"></i> Indicatori Chiave
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#charts-section"> <!-- Link a sezione Grafici -->
+                    <i class="fas fa-chart-pie fa-fw"></i> Grafici
+                </a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href=index.html> <!-- Link a home -->
+                    <i class="fas fa-home fa-fw"></i> Torna alla home
+                </a>
+            </li>
+
+
+            <li class="nav-title">Analisi Dettagliata</li>
+            <li class="nav-item">
+                <!-- Updated link -->
+                <a class="nav-link" href="Report/parte1_sintesi.html">
+                    <i class="fas fa-file-alt fa-fw"></i> Sintesi e Profilo
+                </a>
+            </li>
+            <li class="nav-item">
+                 <!-- Updated link -->
+                <a class="nav-link" href="Report/parte2_economico.html">
+                    <i class="fas fa-balance-scale fa-fw"></i> Analisi Economica
+                </a>
+            </li>
+             <li class="nav-item">
+                 <!-- Updated link -->
+                <a class="nav-link" href="Report/parte3_patrimoniale.html">
+                    <i class="fas fa-landmark fa-fw"></i> Analisi Patrimoniale
+                </a>
+            </li>
+             <li class="nav-item">
+                 <!-- Updated link -->
+                 <a class="nav-link" href="Report/parte4_bancabilita.html">
+                     <i class="fas fa-university fa-fw"></i> Bancabilità
+                 </a>
+             </li>
+              <li class="nav-item">
+                 <!-- Updated link -->
+                 <a class="nav-link" href="Report/parte5_circolante-flussi.html">
+                     <i class="fas fa-sync-alt fa-fw"></i> Circolante e Flussi
+                 </a>
+             </li>
+              <li class="nav-item">
+                 <!-- Updated link -->
+                 <a class="nav-link" href="Report/parte6_rischi-raccomandazioni.html">
+                     <i class="fas fa-exclamation-triangle fa-fw"></i> Rischi e Azioni
+                 </a>
+             </li>
+
+              <li class="nav-title">Approfondimenti</li>
+              <li class="nav-item">
+                 <!-- Updated link -->
+                 <a class="nav-link" href="Report/irp_dettaglio.html"> <!-- Changed to HTML report if available, else MD -->
+                     <i class="fas fa-shield-alt fa-fw"></i> Dettaglio IRP
+                 </a>
+             </li>
+             <!-- Removed Bilancio Plus link as it seems like internal working data -->
+
+        </ul>
+
+        <div class="sidebar-footer">
+            <small>SCAN360 © <span id="currentYearSidebar"></span> Kitzanos</small>
+        </div>
+    </aside>
+
+    <!-- Contenuto Principale -->
+    <main class="main-content">
+        <!-- Header Orizzontale -->
+        <header class="dashboard-header no-print">
+             <div class="header-title">
+                  <h4 class="mb-0">Guglietta Global S.p.A.</h4> <!-- Added Company Name -->
+             </div>
+            <div class="header-controls d-flex align-items-center">
+                <!-- Updated Date -->
+                <span class="me-3 small text-muted">Aggiornamento: 07 Lug 2025</span>
+                 <button class="btn btn-sm btn-outline-secondary me-2 print-button" onclick="printDocument()">
+                    <i class="fas fa-print"></i> Stampa
+                 </button>
+              
+
+            </div>
+        </header>
+
+         <!-- Area Contenuto Dashboard -->
+        <div class="dashboard-container">
+
+            <!-- Intestazione pagina contenuto -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0 fw-bold" style="color: var(--primary);">Dashboard Esecutiva - Guglietta Global S.p.A.</h3>
+                 <div>
+                     <!-- Eventuali pulsanti azione pagina -->
+                 </div>
+            </div>
+
+            <!-- Sezione KPI Principali -->
+             <section id="kpi-section">
+                 <h4 class="section-title small"><i class="fas fa-tachometer-alt me-2"></i>PANORAMICA KPI</h4>
+                 <div class="row">
+                     <!-- KPI Card: IRP -->
+                     <div class="col-xl-3 col-md-6 mb-4">
+                         <!-- Updated IRP -->
+                         <div class="kpi-card-v2 border-left-success"> <!-- Changed to success for 94.68 -->
+                              <i class="fas fa-shield-alt kpi-icon-modern-bg"></i>
+                              <h4 class="card-title-modern">Indice Rischio (IRP)</h4>
+                              <div class="kpi-value-modern">94,7</div> <!-- Updated IRP Value -->
+                             <div class="kpi-trend-modern">
+                                 <span class="status-badge bg-success">Molto Basso</span> <!-- Updated IRP Category -->
+                                 <span class="text-muted ms-2">(Scala 0-100)</span>
+                             </div>
+                             <p class="kpi-description-modern">Profilo eccellente, monitorare liquidità.</p> <!-- Updated description -->
+                         </div>
+                     </div>
+                     <!-- KPI Card: Ricavi -->
+                      <div class="col-xl-3 col-md-6 mb-4">
+                         <!-- Updated Ricavi -->
+                         <div class="kpi-card-v2 border-left-success"> <!-- Changed to success for positive trend -->
+                              <i class="fas fa-chart-bar kpi-icon-modern-bg"></i>
+                              <h4 class="card-title-modern">Ricavi</h4>
+                              <div class="kpi-value-modern">€ 17,5 M</div> <!-- Updated Ricavi Value -->
+                             <div class="kpi-trend-modern trend-up"> <!-- Changed to trend-up -->
+                                 <i class="fas fa-arrow-up trend-icon"></i> <!-- Changed icon -->
+                                 <span class="trend-value">+725,58%</span> <span class="text-muted small">vs 2023</span> <!-- Updated trend value -->
+                             </div>
+                             <p class="kpi-description-modern">Crescita esplosiva da monitorare.</p> <!-- Updated description -->
+                         </div>
+                     </div>
+                      <!-- KPI Card: EBITDA Margin -->
+                      <div class="col-xl-3 col-md-6 mb-4">
+                         <!-- Updated EBITDA Margin -->
+                         <div class="kpi-card-v2 border-left-success"> <!-- Kept success as value is excellent -->
+                              <i class="fas fa-percent kpi-icon-modern-bg"></i>
+                              <h4 class="card-title-modern">EBITDA Margin</h4>
+                              <div class="kpi-value-modern">21,6%</div> <!-- Updated EBITDA Margin Value -->
+                              <div class="kpi-trend-modern trend-up"> <!-- Changed to trend-up -->
+                                 <i class="fas fa-arrow-up trend-icon"></i> <!-- Changed icon -->
+                                 <span class="trend-value">+8,1 p.p.</span> <span class="text-muted small">vs 2023</span> <!-- Updated trend value -->
+                              </div>
+                             <p class="kpi-description-modern">Marginalità eccellente (>8%) in crescita.</p> <!-- Updated description -->
+                         </div>
+                     </div>
+                       <!-- KPI Card: PFN/EBITDA -->
+                       <div class="col-xl-3 col-md-6 mb-4">
+                          <!-- Updated PFN/EBITDA -->
+                          <div class="kpi-card-v2 border-left-success"> <!-- Kept success as value is excellent -->
+                               <i class="fas fa-balance-scale kpi-icon-modern-bg"></i>
+                               <h4 class="card-title-modern">PFN / EBITDA</h4>
+                               <div class="kpi-value-modern">-0,01x</div> <!-- Updated PFN/EBITDA Value -->
+                               <div class="kpi-trend-modern trend-up"> <!-- Changed to trend-up (better) -->
+                                  <i class="fas fa-arrow-up trend-icon"></i> <!-- Changed icon -->
+                                  <span class="trend-value">+0,22x</span> <span class="text-muted small">vs 2023</span> <!-- Updated trend value -->
+                               </div>
+                              <p class="kpi-description-modern">Cassa netta, assenza di debito finanziario.</p> <!-- Updated description -->
+                          </div>
+                      </div>
+                       <!-- KPI Card: DSO -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                           <!-- Updated DSO -->
+                           <div class="kpi-card-v2 border-left-warning"> <!-- Changed to warning as 146gg is high -->
+                               <i class="fas fa-file-invoice-dollar kpi-icon-modern-bg"></i>
+                               <h4 class="card-title-modern">Giorni Incasso Clienti</h4>
+                               <div class="kpi-value-modern">146 gg</div> <!-- Updated DSO Value -->
+                               <div class="kpi-trend-modern trend-down"> <!-- Kept trend-down (improvement) -->
+                                  <i class="fas fa-arrow-down trend-icon"></i>
+                                  <span class="trend-value">-163 gg</span> <span class="text-muted small">vs 2023</span> <!-- Updated trend value -->
+                               </div>
+                               <p class="kpi-description-modern">Tempi incasso elevati (Benchmark <90gg).</p> <!-- Updated description -->
+                           </div>
+                       </div>
+                        <!-- KPI Card: Cash Flow Op -->
+                         <div class="col-xl-3 col-md-6 mb-4">
+                            <!-- Updated Cash Flow Operativo -->
+                            <div class="kpi-card-v2 border-left-warning">
+                                <i class="fas fa-coins kpi-icon-modern-bg"></i>
+                                <h4 class="card-title-modern">Cash Flow Operativo</h4>
+                                <div class="kpi-value-modern">€ 0,3 M</div> <!-- Updated Cash Flow Value -->
+                                <div class="kpi-trend-modern trend-up">
+                                   <i class="fas fa-arrow-up trend-icon"></i>
+                                   <span class="trend-value">1,7%</span> <span class="text-muted small">dei Ricavi</span> <!-- Updated trend value -->
+                                </div>
+                               <p class="kpi-description-modern">Insufficiente generazione di cassa (<3%).</p> <!-- Updated description -->
+                            </div>
+                        </div>
+                         <!-- KPI Card: Leanus Score -->
+                          <div class="col-xl-3 col-md-6 mb-4">
+                              <!-- Updated Leanus Score -->
+                              <div class="kpi-card-v2 border-left-warning"> <!-- Changed to warning for Discreto -->
+                                  <i class="fas fa-user-shield kpi-icon-modern-bg"></i>
+                                  <h4 class="card-title-modern">Leanus Score / Categoria</h4>
+                                  <div class="kpi-value-modern">9,47</div> <!-- Updated Leanus Score Value -->
+                                  <div class="kpi-trend-modern">
+                                       <span class="status-badge bg-warning me-2">Discreto (3)</span> <!-- Updated Leanus Score Category -->
+                                       <span class="status-badge bg-success">STAR</span> <!-- Updated Leanus Category -->
+                                  </div>
+                                 <p class="kpi-description-modern">Crescita elevata con equilibrio patrimoniale.</p> <!-- Updated description -->
+                              </div>
+                          </div>
+                          <!-- KPI Card: Prossime Azioni -->
+                           <div class="col-xl-3 col-md-6 mb-4">
+                               <!-- Updated Azione Prioritaria -->
+                               <div class="kpi-card-v2 border-left-info">
+                                   <i class="fas fa-tasks kpi-icon-modern-bg"></i>
+                                   <h4 class="card-title-modern">Azione Prioritaria</h4>
+                                   <div class="kpi-value-modern" style="font-size: 1.5rem;">Gestione Fornitori</div> <!-- Updated Text -->
+                                   <div class="kpi-trend-modern">
+                                        <span class="status-badge bg-danger">Alta Priorità</span>
+                                   </div>
+                                  <p class="kpi-description-modern">Intervento su DPO (372gg) e liquidità.</p> <!-- Updated description -->
+                                   <!-- Updated link target -->
+                                   <a href="report/parte6_rischi-raccomandazioni.html#table_7_1_1" class="btn btn-outline-primary btn-sm btn-pill mt-2">Vedi Piano</a>
+                               </div>
+                           </div>
+                 </div>
+             </section>
+
+             <!-- Sezione Grafici Chiave -->
+             <section id="charts-section">
+                 <h4 class="section-title small mt-4"><i class="fas fa-chart-pie me-2"></i>GRAFICI CHIAVE</h4>
+                 <div class="row">
+                     <div class="col-lg-6 mb-4">
+                          <div class="dashboard-card">
+                              <h6 class="card-title-modern text-center">Trend Economico e Margine</h6>
+                             <div class="chart-container" style="height: 300px;">
+                                 <!-- Canvas for Chart.js, data will be injected via JS -->
+                                 <canvas id="trendRicaviEbitdaChart"></canvas>
+                             </div>
+                          </div>
+                     </div>
+                     <div class="col-lg-6 mb-4">
+                          <div class="dashboard-card">
+                               <h6 class="card-title-modern text-center">Sostenibilità Debito (PFN/EBITDA)</h6>
+                             <div class="chart-container" style="height: 300px;">
+                                  <!-- Canvas for Chart.js, data will be injected via JS -->
+                                  <canvas id="trendPfnEbitdaChart"></canvas>
+                             </div>
+                          </div>
+                     </div>
+                 </div>
+             </section>
+
+             <!-- Altre sezioni possono essere aggiunte qui (es. Sintesi SWOT, Alert specifici) -->
+
+        </div> <!-- /dashboard-container -->
+
+         <!-- Footer Standard (per coerenza, ma nascosto in stampa) -->
+         <footer class="footer no-print">
+              <div class="container-fluid px-4"> <!-- Usa container-fluid per larghezza piena -->
+                  <div class="row">
+                      <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                           SCAN360 © <span id="currentYearFooter"></span>
+                      </div>
+                      <div class="col-md-6 text-center text-md-end">
+                          Powered by <a href="http://www.kitzanos.com" target="_blank" class="text-white fw-bold">Kitzanos Lab</a>
+                          <img src="assets/img/logo_kitzanos.png" alt="Kitzanos Logo" class="ms-2" style="height: 20px; vertical-align: middle;">
+                      </div>
+                  </div>
+              </div>
+          </footer>
+
+    </main> <!-- /main-content -->
+
+
+    <!-- Script JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="js/common.js"></script>
+    <!-- Updated Chart Data -->
+    <script>
+        const chartData = {
+            trendRicaviEbitda: {
+                labels: ['2022', '2023', '2024'],
+                ricavi: [0.06, 2.12, 17.49],
+                ebitda: [0.02, 0.29, 3.78]
+            },
+            trendPfnEbitda: {
+                labels: ['2022', '2023', '2024'],
+                pfnEbitda: [-0.27, -0.23, -0.01]
+            }
+        };
+    </script>
+    <script src="js/charts_config.js"></script>
+    <script src="js/dashboard_init.js"></script>
+     <script>
+        document.getElementById('currentYearSidebar').textContent = new Date().getFullYear();
+        document.getElementById('currentYearFooter').textContent = new Date().getFullYear();
+
+         // Assign correct anchor target ID for Azione Prioritaria button link
+        document.addEventListener('DOMContentLoaded', function() {
+            const actionButton = document.querySelector('a[href^="report/parte6_analisi-rischi-raccomandazioni.html"]');
+            if(actionButton) {
+                 // Update target based on the actual ID used in parte6 file for table 7.1.1
+                 // Assuming the table has an ID or a preceding anchor like <a id="section_7_1"></a>
+                 actionButton.href = "report/parte6_rischi-raccomandazioni.html#table_7_1_1"; // Adjusted target ID
+            }
+
+            // Ensure logout function is defined
+             if (typeof logout !== 'function') {
+                 window.logout = function() {
+                    console.log("Logout action triggered (placeholder)");
+                }
+             }
+             // Ensure print function is defined
+             if (typeof printDocument !== 'function') {
+                window.printDocument = function() {
+                    window.print();
+                }
+             }
+         });
+</script>
+<scan-chat data-bot-id="2778f5c8-8cb8-45c0-a7bd-cf97b4ab0411"></scan-chat>
+<script src="./js/bundle.js"></script>
+</body>
+</html>

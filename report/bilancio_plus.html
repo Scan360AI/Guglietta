@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilancio Plus - GUGLIETTA GLOBAL | SCAN V16</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <link href="../css/print.css" rel="stylesheet" media="print">
+     <style>
+         /* Stili V15 */
+         .feature-icon-bp { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+         .benefit-card-bp { background-color: var(--white); border-left: 4px solid var(--secondary); box-shadow: var(--shadow); border-radius: 8px; padding: 1.5rem;}
+         .cta-card { background-color: var(--light); border-top: 3px solid var(--primary); border-radius: 8px; box-shadow: var(--shadow);}
+         .strategy-card { border-left: 4px solid var(--primary); background-color: var(--white); margin-bottom: 1.5rem; }
+         .impact-value { font-weight: 700; color: var(--success); }
+         .impact-negative { color: var(--danger); }
+         .impact-metric { font-size: 1.2rem; font-weight: 600; }
+     </style>
+</head>
+<body>
+
+    <!-- Sidebar (Identica a V15) -->
+    <aside class="sidebar no-print"> <div class="sidebar-header"> <img src="../assets/img/logo_kitzanos.png" alt="SCAN Logo" style="max-height: 40px;"> <h5>GUGLIETTA GLOBAL</h5> </div> <ul class="sidebar-nav flex-grow-1"> <li class="nav-item"> <a class="nav-link" href="../dashboard_v2.html"> <i class="fas fa-tachometer-alt fa-fw"></i> Dashboard </a> </li> <li class="nav-title">Analisi Dettagliata</li> <li class="nav-item"> <a class="nav-link" href="parte1_sintesi.html"> <i class="fas fa-file-alt fa-fw"></i> Sintesi e Profilo </a> </li> <li class="nav-item"> <a class="nav-link" href="parte2_economico.html"> <i class="fas fa-balance-scale fa-fw"></i> Analisi Economica </a> </li> <li class="nav-item"> <a class="nav-link" href="parte3_patrimoniale.html"> <i class="fas fa-landmark fa-fw"></i> Analisi Patrimoniale </a> </li> <li class="nav-item"> <a class="nav-link" href="parte4_bancabilita.html"> <i class="fas fa-university fa-fw"></i> Bancabilità </a> </li> <li class="nav-item"> <a class="nav-link" href="parte5_circolante_flussi.html"> <i class="fas fa-sync-alt fa-fw"></i> Circolante e Flussi </a> </li> <li class="nav-item"> <a class="nav-link" href="parte6_rischi_raccomandazioni.html"> <i class="fas fa-exclamation-triangle fa-fw"></i> Rischi e Azioni </a> </li> <li class="nav-title">Approfondimenti</li> <li class="nav-item"> <a class="nav-link" href="irp_dettaglio.html"> <i class="fas fa-shield-alt fa-fw"></i> Dettaglio IRP </a> </li> <li class="nav-item"> <a class="nav-link active" href="bilancio_plus.html"> <i class="fas fa-magic fa-fw"></i> Bilancio Plus </a> </li> </ul> <div class="sidebar-footer"> <small>SCAN360 © <span id="currentYearSidebar"></span> Kitzanos</small> </div> </aside>
+
+    <!-- Contenuto Principale Wrapper (Layout V15 Corretto) -->
+    <div class="main-wrapper">
+        <!-- Header Orizzontale -->
+        <header class="dashboard-header no-print"> <div class="header-title"> <h5 class="mb-0">Servizio Aggiuntivo: Bilancio Plus</h5> <p class="mb-0">GUGLIETTA GLOBAL S.P.A. | <span class="report-date">31 Dicembre 2024</span></p> </div> <div class="header-controls d-flex align-items-center"> <span id="irp-header-badge" class="badge me-3"></span> <button class="btn btn-sm btn-outline-secondary me-2 print-button" onclick="printDocument()"> <i class="fas fa-print"></i> Stampa </button> <div class="dropdown"> <button class="btn btn-sm btn-light border dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fas fa-user-circle me-1"></i> AdminGuglietta </button> <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton"> <li><button class="dropdown-item" type="button" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li> </ul> </div> </div> </header>
+        <div class="container d-none d-print-block mt-4 mb-4"> <h1 class="text-center mb-0"><span class="company-name">GUGLIETTA GLOBAL S.P.A.</span></h1> <p class="text-center mb-0">Servizio Aggiuntivo: Bilancio Plus | <span class="report-date">31 Dicembre 2024</span></p> <hr> </div>
+
+        <!-- Area Contenuto Specifico del Report -->
+        <div class="dashboard-container">
+
+            <!-- ================================================================ -->
+            <!-- CONTENUTO SPECIFICO BILANCIO PLUS - V16 -->
+            <!-- ================================================================ -->
+
+            <h2 class="section-title" id="bilancio-plus-intro"><i class="fas fa-magic me-2"></i>Ottimizzazione Contabile Pre-Approvazione</h2>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-body text-center p-lg-5">
+                    <h1 class="display-6 fw-bold mb-3 text-primary">Massimizza il Potenziale del Tuo Bilancio</h1>
+                    <p class="lead mb-4">Strategie legittime di ottimizzazione contabile per migliorare gli indicatori economico-finanziari, rafforzare la bancabilità e ottimizzare la struttura patrimoniale di GUGLIETTA GLOBAL S.P.A.</p>
+                    <i class="fas fa-chart-line fa-3x text-secondary mb-3"></i>
+                 </div>
+             </div>
+
+           <h3 class="section-title mt-5" id="features"><i class="fas fa-cogs me-2"></i>Strategie di Ottimizzazione Prioritarie</h3>
+           <div class="row g-4">
+                <div class="col-md-6 col-lg-4"> <div class="dashboard-card text-center h-100"> <div class="feature-icon-bp"><i class="fas fa-brain"></i></div> <h6>Capitalizzazione Costi Pluriennali</h6> <p class="small">Identificazione e capitalizzazione di costi di sviluppo con utilità futura nel settore costruzioni.</p> </div> </div>
+                <div class="col-md-6 col-lg-4"> <div class="dashboard-card text-center h-100"> <div class="feature-icon-bp"><i class="fas fa-calculator"></i></div> <h6>Ottimizzazione Ammortamenti</h6> <p class="small">Revisione delle aliquote di ammortamento per asset tecnologici e attrezzature di cantiere.</p> </div> </div>
+                 <div class="col-md-6 col-lg-4"> <div class="dashboard-card text-center h-100"> <div class="feature-icon-bp"><i class="fas fa-chart-area"></i></div> <h6>Affinamento Accantonamenti</h6> <p class="small">Revisione attuariale dei fondi e ottimizzazione degli accantonamenti per rischi operativi.</p> </div> </div>
+                 <div class="col-md-6 col-lg-4"> <div class="dashboard-card text-center h-100"> <div class="feature-icon-bp"><i class="fas fa-money-bill-wave"></i></div> <h6>Razionalizzazione Circolante</h6> <p class="small">Implementazione di factoring pro-soluto e supply chain finance per normalizzare il ciclo del circolante.</p> </div> </div>
+                 <div class="col-md-6 col-lg-4"> <div class="dashboard-card text-center h-100"> <div class="feature-icon-bp"><i class="fas fa-piggy-bank"></i></div> <h6>Ottimizzazione Fiscale</h6> <p class="small">Massimizzazione delle deduzioni ammissibili e utilizzo strategico di crediti d'imposta disponibili.</p> </div> </div>
+                 <div class="col-md-6 col-lg-4"> <div class="dashboard-card text-center h-100"> <div class="feature-icon-bp"><i class="fas fa-clipboard-list"></i></div> <h6>Enhancement Disclosure</h6> <p class="small">Potenziamento dell'informativa sulla continuità aziendale e strategie di crescita sostenibile.</p> </div> </div>
+           </div>
+
+           <h3 class="section-title mt-5" id="strategies"><i class="fas fa-lightbulb me-2"></i>Dettaglio Interventi Proposti</h3>
+           
+           <div class="card strategy-card">
+               <div class="card-body">
+                   <h5><i class="fas fa-brain text-primary me-2"></i> Capitalizzazione Strategica di Costi Pluriennali</h5>
+                   <p class="small">Analisi delle immobilizzazioni immateriali (attualmente €252.749, di cui €250.553 in immobilizzazioni in corso) per identificare ulteriori costi con utilità pluriennale.</p>
+                   <div class="row">
+                       <div class="col-md-8">
+                           <ul class="small">
+                               <li>Finalizzazione e attivazione dei progetti in corso di sviluppo</li>
+                               <li>Capitalizzazione di costi di ricerca applicata e sviluppo tecnologico</li>
+                               <li>Rilevazione di software, licenze e know-how con utilità pluriennale</li>
+                           </ul>
+                       </div>
+                       <div class="col-md-4 text-end">
+                           <span class="impact-metric">Impatto: <span class="impact-value">+€200.000/€300.000</span></span>
+                           <p class="small text-muted">Incremento immobilizzazioni</p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           
+           <div class="card strategy-card">
+               <div class="card-body">
+                   <h5><i class="fas fa-calculator text-primary me-2"></i> Ottimizzazione delle Politiche di Ammortamento</h5>
+                   <p class="small">Revisione delle aliquote di ammortamento per le immobilizzazioni materiali (€104.012) entro i parametri consentiti dai principi contabili.</p>
+                   <div class="row">
+                       <div class="col-md-8">
+                           <ul class="small">
+                               <li>Estensione della vita utile degli asset tecnologici in considerazione del loro stato di conservazione</li>
+                               <li>Applicazione del metodo accelerato per asset con obsolescenza rapida</li>
+                               <li>Revisione delle aliquote in funzione dell'effettivo utilizzo</li>
+                           </ul>
+                       </div>
+                       <div class="col-md-4 text-end">
+                           <span class="impact-metric">Impatto: <span class="impact-value">+€8.000/€15.000</span></span>
+                           <p class="small text-muted">Riduzione ammortamenti</p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           
+           <div class="card strategy-card">
+               <div class="card-body">
+                   <h5><i class="fas fa-chart-area text-primary me-2"></i> Affinamento della Gestione degli Accantonamenti</h5>
+                   <p class="small">Ottimizzazione degli accantonamenti (attualmente fondi per €1.866) attraverso una revisione attuariale e probabilistica.</p>
+                   <div class="row">
+                       <div class="col-md-8">
+                           <ul class="small">
+                               <li>Revisione attuariale dei fondi per il personale con parametri aggiornati</li>
+                               <li>Valutazione probabilistica dei rischi operativi e commerciali</li>
+                               <li>Ottimizzazione degli accantonamenti per garanzie e resi su base statistica</li>
+                           </ul>
+                       </div>
+                       <div class="col-md-4 text-end">
+                           <span class="impact-metric">Impatto: <span class="impact-value">+€5.000/€10.000</span></span>
+                           <p class="small text-muted">Riduzione accantonamenti</p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           
+           <div class="card strategy-card">
+               <div class="card-body">
+                   <h5><i class="fas fa-money-bill-wave text-primary me-2"></i> Razionalizzazione del Capitale Circolante</h5>
+                   <p class="small">Ottimizzazione del capitale circolante caratteristico (attualmente -€6.959.165) con focus su crediti clienti (€7.090.010) e debiti fornitori (€14.049.175).</p>
+                   <div class="row">
+                       <div class="col-md-8">
+                           <ul class="small">
+                               <li>Implementazione di accordi di factoring pro-soluto per la cessione selettiva di crediti</li>
+                               <li>Strutturazione di supply chain finance per la formalizzazione delle dilazioni ai fornitori</li>
+                               <li>Ottimizzazione delle condizioni di pagamento attraverso reverse factoring</li>
+                           </ul>
+                       </div>
+                       <div class="col-md-4 text-end">
+                           <span class="impact-metric">Impatto: <span class="impact-value">+50/80 giorni</span></span>
+                           <p class="small text-muted">Miglioramento ciclo circolante</p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+           <h3 class="section-title mt-5" id="benefits"><i class="fas fa-star me-2"></i>Impatti Attesi sugli Indicatori Chiave</h3>
+           <div class="row g-4">
+               <div class="col-md-6"> <div class="dashboard-card benefit-card-bp h-100"> <h5><i class="fas fa-chart-pie text-primary me-2"></i> Miglioramento Indicatori Economici</h5> <p class="small">EBITDA: da €3.784.950 a €3.834.950 (+1,3%)<br>EBIT: da €3.759.392 a €3.824.892 (+1,7%)<br>Utile netto: da €2.587.447 a €2.657.447 (+2,7%)</p> </div> </div>
+               <div class="col-md-6"> <div class="dashboard-card benefit-card-bp h-100"> <h5><i class="fas fa-hands-helping text-primary me-2"></i> Rafforzamento Patrimoniale</h5> <p class="small">Immobilizzazioni immateriali: da €252.749 a €502.749 (+98,9%)<br>Liquidità efficace: da €37.620 a €237.620 (+531,7%)<br>Ciclo del circolante: da -226 gg a -146 gg (+35,4%)</p> </div> </div>
+                <div class="col-md-6"> <div class="dashboard-card benefit-card-bp h-100"> <h5><i class="fas fa-lock text-primary me-2"></i> Miglioramento Rating e Scoring</h5> <p class="small">Leanus Score: da "3 - Discreto" (9,47) a "2 - Buono" (12-15)<br>Z-Score di Altman: mantenimento posizione di eccellenza (>11)<br>Miglioramento parametri di liquidità e cash flow</p> </div> </div>
+                <div class="col-md-6"> <div class="dashboard-card benefit-card-bp h-100"> <h5><i class="fas fa-coins text-primary me-2"></i> Ottimizzazione Redditività</h5> <p class="small">ROI: da 130,52% a 132,95% (+1,9%)<br>ROE: da 88,67% a 91,09% (+2,7%)<br>Miglioramento qualità degli utili e conversione in cash flow</p> </div> </div>
+           </div>
+
+            <div class="card my-5 report-section cta-card">
+               <div class="card-body text-center p-lg-5">
+                   <h4 class="mb-3 text-primary"><i class="fas fa-question-circle me-2"></i>Implementazione e Governance</h4>
+                   <p>Le strategie proposte sono implementabili in un orizzonte di 15-30 giorni prima dell'approvazione del bilancio, con un approccio strutturato in fasi e un sistema di controlli per garantire la piena conformità normativa.</p>
+                    <a href="mailto:info@kitzanos.com?subject=Richiesta%20Implementazione%20Bilancio%20Plus%20-%20GUGLIETTA%20GLOBAL" class="btn btn-primary btn-lg mt-2 btn-pill">
+                        <i class="fas fa-envelope me-2"></i> Richiedi Implementazione
+                    </a>
+               </div>
+           </div>
+
+            <!-- ================================================================ -->
+            <!-- FINE CONTENUTO SPECIFICO BILANCIO PLUS -->
+            <!-- ================================================================ -->
+
+        </div> <!-- /dashboard-container -->
+
+        <!-- Footer Standard V2 (Corretto) -->
+        <footer class="footer no-print"> <div class="container-fluid px-4"> <div class="row align-items-center"> <div class="col-md-6 text-center text-md-start mb-2 mb-md-0"> SCAN360 © <span id="currentYearFooterReport"></span> </div> <div class="col-md-6 text-center text-md-end"> Powered by <a href="http://www.kitzanos.com" target="_blank" class="text-white fw-bold">Kitzanos Lab</a> <img src="../assets/img/logo_kitzanos.png" alt="Kitzanos Logo" class="ms-2"> </div> </div> </div> </footer>
+
+    </div> <!-- /main-wrapper -->
+
+    <!-- Script JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/common.js"></script>
+     <script>
+        document.getElementById('currentYearSidebar').textContent = new Date().getFullYear();
+        document.getElementById('currentYearFooterReport').textContent = new Date().getFullYear();
+         // Script aggiornamento badge IRP header
+         document.addEventListener('DOMContentLoaded', function() {
+             const irpScoreValue = 94.68; const irpHeaderBadge = document.getElementById('irp-header-badge');
+             if(irpHeaderBadge) { let badgeClass = 'bg-warning text-dark'; if (irpScoreValue >= 70) badgeClass = 'bg-success'; else if (irpScoreValue < 50) badgeClass = 'bg-danger'; irpHeaderBadge.className = `badge ${badgeClass} me-3`; irpHeaderBadge.textContent = `IRP: ${irpScoreValue.toFixed(1)}`; }
+         });
+    </script>
+    <scan-chat data-bot-id="2778f5c8-8cb8-45c0-a7bd-cf97b4ab0411"></scan-chat>
+    <script src="../js/bundle.js"></script>
+</body>
+</html>

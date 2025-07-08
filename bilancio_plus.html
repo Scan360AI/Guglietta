@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilancio Plus - Ottimizzazione - Guglietta Global S.p.A. | SCAN</title>
+    <!-- Librerie Esterne -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Custom -->
+    <link href="../css/styles.css" rel="stylesheet">
+    <link href="../css/print.css" rel="stylesheet" media="print">
+    <!-- Stili Incorporati -->
+    <style>
+        /* Copia/Incolla stili da versione precedente qui... */
+         :root {
+            --primary: #191970; --secondary: #4a69bd; --success: #4CAF50;
+            --warning: #FFC107; --danger: #F44336; --info: #0dcaf0;
+            --light: #f8f9fa; --dark: #343a40; --white: #ffffff;
+            --text-primary: #212529; --text-secondary: #6c757d;
+            --card-bg: var(--white); --card-border: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            /* Nuovi colori per i grafici */
+            --color-attuale: rgba(74, 105, 189, 0.7);       /* Blu secondario */
+            --color-attuale-border: rgba(74, 105, 189, 1);
+            --color-ottimizzato: rgba(76, 175, 80, 0.7);    /* Verde successo */
+            --color-ottimizzato-border: rgba(76, 175, 80, 1);
+        }
+        html, body { height: 100%; overflow-x: hidden; font-family: 'Titillium Web', sans-serif; background-color: #f4f8fb; }
+        body { display: flex; }
+        .sidebar { width: 250px; background-color: var(--primary); color: #e0e0e0; position: fixed; top: 0; bottom: 0; left: 0; z-index: 1031; display: flex; flex-direction: column; box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1); transition: width 0.3s ease; overflow-y: auto; }
+        .main-wrapper { margin-left: 250px; width: calc(100% - 250px); display: flex; flex-direction: column; min-height: 100vh; position: relative; padding-top: 70px; }
+        .dashboard-header { background-color: var(--white); padding: 15px 30px; border-bottom: 1px solid var(--card-border); box-shadow: 0 2px 5px rgba(0,0,0,0.05); min-height: 70px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 250px; right: 0; z-index: 1030; }
+        .dashboard-container { padding: 30px; flex-grow: 1; width: 100%; }
+        .footer { background-color: var(--primary); color: rgba(255, 255, 255, 0.7); padding: 15px 30px; font-size: 0.85rem; margin-top: auto; flex-shrink: 0; width: 100%; }
+        .footer img { max-height: 20px; width: auto; filter: brightness(0) invert(1); opacity: 0.8; vertical-align: middle;}
+        .sidebar-header { padding: 10px 20px; margin-bottom: 20px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .sidebar-header img { max-height: 40px; } .sidebar-header h5 { color: var(--white); margin-top: 10px; font-size: 1.1rem; font-weight: 600; }
+        .sidebar-nav { list-style: none; padding: 0; } .sidebar-nav .nav-item { margin: 0; }
+        .sidebar-nav .nav-link { color: #e0e0e0; padding: 12px 20px; display: flex; align-items: center; font-size: 0.95rem; font-weight: 500; border-left: 4px solid transparent; transition: all 0.2s ease; }
+        .sidebar-nav .nav-link:hover { background-color: rgba(255, 255, 255, 0.05); color: var(--white); border-left-color: var(--warning); }
+        .sidebar-nav .nav-link.active { background-color: rgba(255, 255, 255, 0.1); color: var(--white); font-weight: 600; border-left-color: var(--white); }
+        .sidebar-nav .nav-link i { margin-right: 15px; width: 20px; text-align: center; font-size: 1rem; }
+        .sidebar-nav .nav-title { padding: 10px 20px; font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; }
+        .sidebar-footer { margin-top: auto; padding: 15px 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.9rem; text-align: left; }
+        .section-title { color: var(--primary); font-weight: 600; margin-top: 2.5rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--secondary); font-size: 1.75rem; display: flex; align-items: center; } .section-title i { margin-right: 10px; }
+        .dashboard-card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); transition: all 0.3s ease; height: 100%; }
+        .dashboard-card:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.1); transform: translateY(-3px); }
+        .card-title-small { font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .table { border: 1px solid var(--card-border); margin-bottom: 1rem; } .table thead th { background-color: var(--light); color: var(--primary); font-weight: 600; border-bottom: 2px solid var(--primary); font-size: 0.9rem; white-space: nowrap; } .table-hover tbody tr:hover { background-color: #eef2f7; } .table td, .table th { vertical-align: middle; padding: 0.6rem 0.75rem; font-size: 0.9rem;} .value-highlight { font-weight: 600; color: var(--primary); } .text-end { text-align: right !important;} .text-success { color: var(--success) !important; } .text-danger { color: var(--danger) !important; } .text-warning { color: var(--warning) !important; } .text-secondary { color: var(--text-secondary) !important; }
+        .alert-box { padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid; } .alert-box h5 { margin-bottom: 10px; font-size: 1.1rem; font-weight: 600;} .alert-box ul { padding-left: 20px; margin-bottom: 0; font-size: 0.9rem;} .alert-box.alert-success { background-color: #d1e7dd; border-color: #a3cfbb; color: #0a3622; } .alert-box.alert-warning { background-color: #fff3cd; border-color: #ffda6a; color: #664d03; } .alert-box.alert-danger { background-color: #f8d7da; border-color: #f1aeb5; color: #58151c; } .alert-box.alert-info { background-color: #cff4fc; border-color: #9eeaf9; color: #055160; }
+        .status-badge { font-size: .75em; font-weight: 700; line-height: 1; padding: .35em .65em; border-radius: .375rem; color: white; display: inline-block; } .status-badge.bg-success { background-color: var(--success) !important; } .status-badge.bg-warning { background-color: var(--warning) !important; color: var(--dark) !important;} .status-badge.bg-danger { background-color: var(--danger) !important; } .status-badge.bg-info { background-color: var(--info) !important; color: var(--dark) !important;}
+        .icon-circle { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: white; margin-right: 12px; font-size: 0.9rem; flex-shrink: 0; }
+        .bg-icon-success { background-color: var(--success); } .bg-icon-warning { background-color: var(--warning); } .bg-icon-danger { background-color: var(--danger); } .bg-icon-info { background-color: #4f6d7a; } .bg-icon-primary { background-color: var(--primary); } .bg-icon-secondary { background-color: var(--secondary); }
+        .list-styled { padding-left: 1.5rem; margin-bottom: 1rem;}
+        .list-styled li { margin-bottom: 0.3rem; }
+        .accordion-body strong { display: block; margin-top: 0.5rem; }
+        .chart-container { height: 280px; margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 8px; border: 1px solid var(--card-border); box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: relative; }
+        @media (max-width: 991.98px) { .sidebar { width: 0; border: none; box-shadow: none;} .main-wrapper { margin-left: 0; width: 100%; padding-top: 56px; } .dashboard-header { left: 0; width: 100%; min-height: 56px; padding: 5px 15px;} .header-title h5 { font-size: 1rem;} .header-title p { font-size: 0.75rem;} .dashboard-container { padding: 15px;} .footer { padding: 10px 15px;} }
+        @media print { body { display: block; } .main-wrapper { margin-left: 0; width: 100%; padding-top: 0; } .no-print { display: none !important; } .report-section { page-break-inside: avoid; } }
+    </style>
+    <!-- Chart.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+
+    <!-- Sidebar Semplificata -->
+    <aside class="sidebar no-print">
+         <div class="sidebar-header">
+            <!-- Logo SCAN -->
+             <img src="assets/img/logo_scan.png" alt="SCAN Logo" style="max-height: 40px;">
+            <h5>Guglietta Global S.p.A.</h5>
+        </div>
+        <ul class="sidebar-nav flex-grow-1">
+            <!-- Link Home -->
+            <li class="nav-item"> <a class="nav-link" href="index.html"> <i class="fas fa-home fa-fw"></i> Torna alla Home </a> </li>
+            <li class="nav-title">Sezioni Bilancio Plus</li>
+            <!-- Ancore alle sezioni della pagina -->
+            <li class="nav-item"> <a class="nav-link" href="#summary"> <i class="fas fa-clipboard-list fa-fw"></i> Sintesi Attuale </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#optimization-areas"> <i class="fas fa-search-plus fa-fw"></i> Aree Ottimizzazione </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#optimization-proposals"> <i class="fas fa-cogs fa-fw"></i> Ipotesi Ottimizzazione </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#impact-summary"> <i class="fas fa-chart-pie fa-fw"></i> Impatto Complessivo </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#final-thoughts"> <i class="fas fa-gavel fa-fw"></i> Considerazioni Finali </a> </li>
+
+        </ul>
+        <div class="sidebar-footer"> <small>SCAN360 © <span id="currentYearSidebar"></span> Kitzanos</small> </div>
+    </aside>
+
+    <!-- Contenuto Principale Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header Orizzontale -->
+        <header class="dashboard-header no-print">
+            <div class="header-title">
+                <h5 class="mb-0">Analisi Finanziaria e Proposte di Ottimizzazione (Bilancio Plus)</h5>
+                <p class="mb-0">Guglietta Global S.p.A. | <span class="report-date">Esercizio 2024</span></p>
+            </div>
+            <div class="header-controls d-flex align-items-center">
+                <!-- Rimosso badge IRP -->
+                <button class="btn btn-sm btn-outline-secondary me-2 print-button" onclick="printDocument()"> <i class="fas fa-print"></i> Stampa </button>
+                
+            </div>
+        </header>
+        <div class="container d-none d-print-block mt-4 mb-4">
+            <h1 class="text-center mb-0"><span class="company-name">Guglietta Global S.p.A.</span></h1>
+            <p class="text-center mb-0">Analisi Finanziaria e Proposte di Ottimizzazione (Bilancio Plus) | <span class="report-date">Esercizio 2024</span></p>
+            <hr>
+        </div>
+
+        <!-- Area Contenuto Specifico del Report -->
+        <div class="dashboard-container">
+
+            <!-- ================================================================ -->
+            <!-- CONTENUTO BILANCIO PLUS - Guglietta Global (Basato su MD) -->
+            <!-- ================================================================ -->
+
+             <h2 class="section-title" id="optimization-analysis-title"><i class="fas fa-magic me-2"></i>Analisi Finanziaria e Proposte di Ottimizzazione</h2>
+
+            <!-- Sezione 1: Premessa -->
+            <div class="card mb-4 report-section">
+                 <div class="card-header"><h5 class="mb-0">1. Quadro di Riferimento e Metodologia</h5></div>
+                 <div class="card-body small">
+                     <h6>1.1 Premessa e ambito di analisi</h6>
+                     <p>La presente relazione sviluppa un framework analitico strutturato per l'identificazione di legittimi interventi di ottimizzazione contabile applicabili prima dell'approvazione del bilancio d'esercizio 2024 di GUGLIETTA GLOBAL SPA. L'analisi è condotta nel rigoroso rispetto della normativa civilistica e dei principi contabili nazionali OIC, configurandosi come affinamento delle rappresentazioni contabili e delle stime valutative consentite dal quadro normativo, senza alterazione dei fatti economici già verificatisi.</p>
+                     <h6>1.2 Dati di partenza</h6>
+                     <p>L'analisi è basata sui dati del Report Leanus aggiornato al 07/07/2025, che evidenzia la situazione economico-finanziaria di GUGLIETTA GLOBAL SPA al 12/2024. La validazione dei dati input rivela un check di riclassificazione con squadratura contabile rilevata per il periodo 12/2023, mentre risulta "OK" per tutti gli altri periodi analizzati, garantendo l'affidabilità dell'analisi per l'esercizio in esame.</p>
+                 </div>
+            </div>
+
+             <!-- Sezione 2: Sintesi Situazione Attuale -->
+             <div class="card mb-4 report-section" id="summary">
+                 <div class="card-header"><h5 class="mb-0">2. Sintesi della Situazione Attuale (2024)</h5></div>
+                 <div class="card-body small">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="card-title-small">2.1 Profilo Economico</h6>
+                            <ul class="list-styled">
+                                <li><strong>Ricavi:</strong> €17.488.348 (<span class="text-success">+725,58%</span> vs 2023)</li>
+                                <li><strong>EBITDA:</strong> €3.784.950 (21,64% sui Ricavi)</li>
+                                <li><strong>EBIT:</strong> €3.759.392 (21,50% sui Ricavi)</li>
+                                <li><strong>Utile netto:</strong> €2.587.447 (14,80% sui Ricavi)</li>
+                                <li><strong>Moltiplicatore costi fissi:</strong> 4,51</li>
+                            </ul>
+                             <h6 class="card-title-small mt-3">2.2 Profilo Patrimoniale</h6>
+                            <ul class="list-styled">
+                                <li><strong>Patrimonio Netto:</strong> €2.917.973</li>
+                                <li><strong>Attivo Fisso Netto:</strong> €467.089</li>
+                                <li><strong>Copertura Immobilizzazioni:</strong> 6,25 (<span class="badge bg-success">Eccellente</span>)</li>
+                                <li><strong>PFN:</strong> -€37.620 (cassa netta)</li>
+                                <li><strong>Leva (D/E):</strong> 0,00 (<span class="badge bg-success">Ottimo</span>)</li>
+                                <li><strong>PFN/EBITDA:</strong> OK (PFN negativa) (<span class="badge bg-success">Eccellente</span>)</li>
+                                <li><strong>Turnover:</strong> 6,07 (<span class="badge bg-success">Ottimo</span>)</li>
+                            </ul>
+                        </div>
+                         <div class="col-md-6">
+                             <h6 class="card-title-small">2.3 Profilo Finanziario</h6>
+                            <ul class="list-styled">
+                                <li><strong>Liquidità:</strong> €37.620 (0,22% ricavi) (<span class="text-danger">-42,16%</span> vs 2023)</li>
+                                <li><strong>Cash Flow Operativo:</strong> €293.754 (1,68% sui Ricavi)</li>
+                                <li><strong>Variazione Netta Cassa:</strong> -€27.416 (-0,16% ricavi)</li>
+                                <li><strong>DSO:</strong> 146 giorni</li>
+                                <li><strong>DPO:</strong> 372 giorni</li>
+                                <li><strong>DIO:</strong> 0 giorni</li>
+                                <li><strong>CCC:</strong> -226 giorni (<span class="badge bg-warning">Attenzione</span>)</li>
+                                <li><strong>Capitale Circolante Operativo:</strong> -€6.959.165</li>
+                            </ul>
+                             <h6 class="card-title-small mt-3">2.4 Indicatori di Rischio e Rating</h6>
+                             <ul class="list-styled">
+                                <li><strong>Leanus Score:</strong> "3 - Discreto" (9,47) (<span class="text-warning">Monitorare</span>)</li>
+                                <li><strong>Z-Score di Altman:</strong> 11,42 (<span class="badge bg-success">Zona Sicura</span>)</li>
+                                <li><strong>Prob. Default (MCC):</strong> N.A. (<span class="badge bg-info">UNRATED</span>)</li>
+                                <li><strong>Interest Coverage Ratio (EBIT/Oneri fin.):</strong> 9.815,44 (<span class="badge bg-success">Eccellente</span>)</li>
+                                <li><strong>Current Ratio:</strong> 1,14 (<span class="text-warning">Adeguato</span>)</li>
+                             </ul>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+             <!-- Sezione 3: Aree di Potenziale Ottimizzazione -->
+             <div class="card mb-4 report-section" id="optimization-areas">
+                 <div class="card-header"><h5 class="mb-0">3. Aree Critiche e Opportunità di Ottimizzazione</h5></div>
+                 <div class="card-body small">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6 class="card-title-small">3.1 Criticità Emergenti</h6>
+                               <ul class="list-styled">
+                                   <li><i class="fas fa-exclamation-triangle text-danger me-1"></i> Liquidità inadeguata ai volumi operativi (0,22% dei ricavi).</li>
+                                   <li><i class="fas fa-exclamation-triangle text-danger me-1"></i> Gestione anomala del capitale circolante (DSO 146 giorni, DPO 372 giorni).</li>
+                                   <li><i class="fas fa-exclamation-triangle text-warning me-1"></i> Cash flow operativo insufficiente (1,68% sui ricavi).</li>
+                                   <li><i class="fas fa-exclamation-triangle text-warning me-1"></i> Dipendenza eccessiva dal finanziamento fornitori.</li>
+                                   <li><i class="fas fa-exclamation-triangle text-warning me-1"></i> Struttura degli oneri finanziari (€383 su indebitamento nullo).</li>
+                                   <li><i class="fas fa-info-circle text-secondary me-1"></i> Crescita esplosiva da monitorare per sostenibilità.</li>
+                               </ul>
+                          </div>
+                           <div class="col-md-6">
+                               <h6 class="card-title-small">3.2 Opportunità di Ottimizzazione</h6>
+                                <ul class="list-styled">
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Capitalizzazione strategica di costi pluriennali.</li>
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Ottimizzazione delle politiche di ammortamento.</li>
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Affinamento della gestione degli accantonamenti.</li>
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Riclassificazione funzionale di componenti patrimoniali.</li>
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Ottimizzazione del cut-off temporale.</li>
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Razionalizzazione della struttura del capitale circolante.</li>
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Enhancement della disclosure informativa.</li>
+                                    <li><i class="fas fa-cogs text-primary me-1"></i> Ottimizzazione fiscale strutturale.</li>
+                                </ul>
+                           </div>
+                      </div>
+                 </div>
+            </div>
+
+             <!-- Sezione 4: Ipotesi di Ottimizzazione -->
+             <div class="card mb-4 report-section" id="optimization-proposals">
+                <div class="card-header"><h5 class="mb-0">4. Interventi di Ottimizzazione Proposti</h5></div>
+                 <div class="card-body">
+                     <!-- <h6 class="card-title-small">4.1 Premessa Metodologica</h6> -->
+                     <!-- <p class="small">Le seguenti ipotesi sono formulate nel rispetto dei principi contabili, con l'obiettivo di migliorare/ottimizzare gli indici chiave mantenendo una rappresentazione veritiera.</p> -->
+
+                     <h6 class="card-title-small mt-4">4.2 Tabella Miglioramenti Proposti (Scenario Ottimistico)</h6>
+                     <div class="table-responsive">
+                         <table class="table table-sm table-striped table-hover">
+                              <thead class="table-light">
+                                  <tr>
+                                      <th>Area / Voce</th>
+                                      <th>Azione Suggerita</th>
+                                      <th>Effetto Previsto</th>
+                                      <th>Impatto Quantitativo (Stima Range)</th>
+                                      <th>Principio/Norma</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td><strong>Capitalizzazione costi</strong></td>
+                                      <td>Finalizzazione e attivazione progetti in corso</td>
+                                      <td>Aumento Immob. Imm. / Riduzione costi</td>
+                                      <td class="text-end"><span class="text-success">+€200K / +€300K</span> (Immob. Imm.)</td>
+                                      <td>OIC 24 (Capitalizzazione)</td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Ammortamenti</strong></td>
+                                      <td>Revisione aliquote e vita utile asset</td>
+                                      <td>Riduzione costo</td>
+                                      <td class="text-end"><span class="text-success">+€8K / +€15K</span> (EBIT/Utile)</td>
+                                      <td>OIC 16 (Modifica stime)</td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Accantonamenti</strong></td>
+                                      <td>Revisione attuariale fondi</td>
+                                      <td>Ottimizzazione valore</td>
+                                      <td class="text-end"><span class="text-success">+€5K / +€10K</span> (EBIT/Utile)</td>
+                                      <td>OIC 31 (Stime attendibili)</td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Capitale circolante</strong></td>
+                                      <td>Factoring pro-soluto per crediti</td>
+                                      <td>Miglioramento liquidità</td>
+                                      <td class="text-end"><span class="text-success">+50gg / +80gg</span> (CCC)<br><span class="text-success">+€1.0M/+€1.3M</span> (Liquidità)</td>
+                                      <td>OIC 15/19 (Gestione Fin.)</td>
+                                  </tr>
+                                   <tr>
+                                      <td><strong>Cut-off temporale</strong></td>
+                                      <td>Verifica competenza operazioni fine esercizio</td>
+                                      <td>Affinamento rappresentazione</td>
+                                      <td class="text-end"><span class="text-success">+€100K / +€200K</span></td>
+                                      <td>OIC 11 (Competenza)</td>
+                                  </tr>
+                                   <tr>
+                                      <td><strong>Riclassificazione patrimoniale</strong></td>
+                                      <td>Segregazione crediti per natura/scadenza</td>
+                                      <td>Migliora indici liquidità</td>
+                                      <td class="text-end"><span class="text-success">+15% / +25%</span> (Indici liquidità)</td>
+                                      <td>OIC 12 (Classificazione)</td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Ottimizzazione fiscale</strong></td>
+                                      <td>Maximizzazione deduzioni e crediti d'imposta</td>
+                                      <td>Riduzione carico fiscale</td>
+                                      <td class="text-end"><span class="text-success">+€50K / +€100K</span> (Risparmio fiscale)</td>
+                                      <td>TUIR (Ottimizzazione legale)</td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Disclosure informativa</strong></td>
+                                      <td>Potenziamento informativa in nota integrativa</td>
+                                      <td>Miglioramento percezione qualitativa</td>
+                                      <td class="text-end"><span class="text-success">Miglioramento rating</span></td>
+                                      <td>Art. 2427 c.c. e OIC 11</td>
+                                  </tr>
+                              </tbody>
+                         </table>
+                     </div>
+
+                     <!-- Sezione Grafici Impatto INSERITA QUI -->
+                     <h6 class="card-title-small mt-5">5.0 Visualizzazione Impatto Ottimizzazioni (Scenario Ottimistico)</h6>
+                     <div class="row">
+                         <div class="col-lg-6 col-md-6 mb-3">
+                            <h6 class="text-center small">Grafico 5.1: Utile Netto (€) - Prima vs Dopo</h6>
+                            <div class="chart-container"><canvas id="utileNettoChart"></canvas></div>
+                         </div>
+                         <div class="col-lg-6 col-md-6 mb-3">
+                            <h6 class="text-center small">Grafico 5.2: EBITDA Margin (%) - Prima vs Dopo</h6>
+                            <div class="chart-container"><canvas id="ebitdaMarginChart"></canvas></div>
+                         </div>
+                         <div class="col-lg-6 col-md-6 mb-3">
+                            <h6 class="text-center small">Grafico 5.3: Ciclo Circolante (gg) - Prima vs Dopo</h6>
+                            <div class="chart-container"><canvas id="cccChart"></canvas></div>
+                         </div>
+                         <div class="col-lg-6 col-md-6 mb-3">
+                             <h6 class="text-center small">Grafico 5.4: PFN/EBITDA (ratio) - Prima vs Dopo</h6>
+                             <div class="chart-container"><canvas id="pfnEbitdaChart"></canvas></div>
+                         </div>
+                     </div>
+                     <!-- Fine Sezione Grafici -->
+
+                     <h6 class="card-title-small mt-4">4.3 Dettaglio Interventi di Ottimizzazione Proposti</h6>
+                      <div class="accordion small" id="motivationsAccordion">
+                          <!-- Capitalizzazione costi -->
+                           <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv1"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv1" aria-expanded="false" aria-controls="collapseMotiv1">4.1.1 Capitalizzazione strategica di costi pluriennali</button></h2>
+                              <div id="collapseMotiv1" class="accordion-collapse collapse" aria-labelledby="headingMotiv1" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Immobilizzazioni immateriali per €252.749 (8,8% dell'attivo), di cui €250.553 in immobilizzazioni in corso e acconti.<br><strong>Opportunità:</strong> Finalizzazione e attivazione dei progetti in corso di sviluppo.<br><strong>Intervento proposto:</strong> Capitalizzazione di costi di ricerca applicata e sviluppo tecnologico sostenuti nell'esercizio. Rilevazione di software, licenze e know-how con utilità pluriennale.<br><strong>Potenziale impatto:</strong> <span class="text-success">Incremento delle immobilizzazioni immateriali di €200.000-€300.000</span>.<br><strong>Base normativa:</strong> Art. 2426, punto 5, c.c. e OIC 24, paragrafi 36-42, che consentono la capitalizzazione dei costi di sviluppo se relativi a progetti chiaramente definiti, identificabili e misurabili, con recuperabilità dei costi ragionevolmente dimostrata.</div></div>
+                          </div>
+                          <!-- Ammortamenti -->
+                           <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv2"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv2" aria-expanded="false" aria-controls="collapseMotiv2">4.1.2 Ottimizzazione delle politiche di ammortamento</button></h2>
+                              <div id="collapseMotiv2" class="accordion-collapse collapse" aria-labelledby="headingMotiv2" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Ammortamenti per €25.557 (0,1% dei ricavi), con fondo ammortamento non evidenziato nel dettaglio patrimoniale.<br><strong>Opportunità:</strong> Revisione delle aliquote di ammortamento entro i parametri consentiti.<br><strong>Intervento proposto:</strong> Revisione delle aliquote di ammortamento per le immobilizzazioni materiali (€104.012) entro i parametri consentiti. Estensione della vita utile degli asset tecnologici in considerazione del loro stato di conservazione.<br><strong>Potenziale impatto:</strong> <span class="text-success">Riduzione ammortamenti di €8.000-€15.000</span>.<br><strong>Base normativa:</strong> OIC 16, par. 70-72, che prevede la possibilità di modificare le aliquote di ammortamento in funzione del deterioramento fisico e dell'obsolescenza, configurando il cambiamento come modifica di stima e non correzione di errore.</div></div>
+                          </div>
+                           <!-- Accantonamenti -->
+                           <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv3"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv3" aria-expanded="false" aria-controls="collapseMotiv3">4.1.3 Ottimizzazione degli accantonamenti</button></h2>
+                              <div id="collapseMotiv3" class="accordion-collapse collapse" aria-labelledby="headingMotiv3" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Fondi per €1.866, principalmente fondo quiescenza.<br><strong>Opportunità:</strong> Revisione degli accantonamenti in base alle attuali stime di rischio.<br><strong>Intervento proposto:</strong> Revisione attuariale dei fondi per il personale con parametri aggiornati. Valutazione probabilistica dei rischi operativi e commerciali. Ottimizzazione degli accantonamenti per garanzie e resi su base statistica.<br><strong>Potenziale impatto:</strong> <span class="text-success">Riduzione accantonamenti di €5.000-€10.000</span>.<br><strong>Base normativa:</strong> OIC 31, paragrafi 13-27, che definisce le condizioni per la rilevazione dei fondi rischi in base a obbligazioni attuali con esborsi probabili e stimabili in modo attendibile.</div></div>
+                          </div>
+                          <!-- Capitale Circolante -->
+                          <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv4"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv4" aria-expanded="false" aria-controls="collapseMotiv4">4.2.1 Razionalizzazione del capitale circolante</button></h2>
+                              <div id="collapseMotiv4" class="accordion-collapse collapse" aria-labelledby="headingMotiv4" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Capitale circolante caratteristico negativo di €6.959.165, con crediti clienti di €7.090.010 e debiti fornitori di €14.049.175.<br><strong>Opportunità:</strong> Ottimizzazione della gestione del capitale circolante.<br><strong>Intervento proposto:</strong> Implementazione di accordi di factoring pro-soluto per la cessione selettiva di crediti. Strutturazione di supply chain finance per la formalizzazione delle dilazioni ai fornitori. Ottimizzazione delle condizioni di pagamento attraverso reverse factoring.<br><strong>Potenziale impatto:</strong> <span class="text-success">Miglioramento del ciclo del circolante di 50-80 giorni</span>.<br><strong>Base normativa:</strong> OIC 15 e 19 per la corretta rappresentazione di crediti e debiti, con particolare attenzione alla sostanza economica delle operazioni.</div></div>
+                          </div>
+                          <!-- Cut-off -->
+                           <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv5"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv5" aria-expanded="false" aria-controls="collapseMotiv5">4.2.2 Enhancement del cut-off temporale</button></h2>
+                              <div id="collapseMotiv5" class="accordion-collapse collapse" aria-labelledby="headingMotiv5" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Operazioni concentrate nel quarto trimestre con potenziali effetti di cut-off.<br><strong>Opportunità:</strong> Ottimizzazione della competenza economica e temporale.<br><strong>Intervento proposto:</strong> Verifica puntuale della competenza economica delle operazioni di fine esercizio. Affinamento dei ratei e risconti (attualmente €647). Ottimizzazione della rilevazione di ricavi e costi per competenza.<br><strong>Potenziale impatto:</strong> <span class="text-success">Affinamento della rappresentazione di €100.000-€200.000</span>.<br><strong>Base normativa:</strong> OIC 11, par. 29-32, sul principio di competenza economica.</div></div>
+                          </div>
+                          <!-- Riclassificazione -->
+                           <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv6"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv6" aria-expanded="false" aria-controls="collapseMotiv6">4.2.3 Riclassificazione funzionale di componenti patrimoniali</button></h2>
+                              <div id="collapseMotiv6" class="accordion-collapse collapse" aria-labelledby="headingMotiv6" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Altri crediti per €12.128.283 (61,5% dell'attivo), prevalentemente crediti tributari.<br><strong>Opportunità:</strong> Miglioramento della rappresentazione patrimoniale.<br><strong>Intervento proposto:</strong> Segregazione dei crediti per natura e scadenza. Riclassificazione delle componenti finanziarie vs operative. Ottimizzazione della rappresentazione della liquidità potenziale.<br><strong>Potenziale impatto:</strong> <span class="text-success">Miglioramento degli indici di liquidità del 15-25%</span>.<br><strong>Base normativa:</strong> OIC 12, par. 38-64, per la corretta classificazione delle voci di stato patrimoniale secondo la loro natura e funzione.</div></div>
+                          </div>
+                          <!-- Ottimizzazione fiscale -->
+                           <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv7"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv7" aria-expanded="false" aria-controls="collapseMotiv7">4.3.1 Ottimizzazione fiscale strutturale</button></h2>
+                              <div id="collapseMotiv7" class="accordion-collapse collapse" aria-labelledby="headingMotiv7" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Imposte di €1.085.022 (tax rate effettivo del 29,5%).<br><strong>Opportunità:</strong> Ottimizzazione del carico fiscale nel rispetto della normativa.<br><strong>Intervento proposto:</strong> Maximizzazione delle deduzioni ammissibili (ammortamenti, accantonamenti). Utilizzo strategico di crediti d'imposta disponibili. Ottimizzazione del timing delle componenti reddituali.<br><strong>Potenziale impatto:</strong> <span class="text-success">Riduzione del carico fiscale di €50.000-€100.000</span>.<br><strong>Base normativa:</strong> TUIR e normativa fiscale vigente per l'ottimizzazione legale del carico tributario.</div></div>
+                          </div>
+                          <!-- Disclosure -->
+                           <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingMotiv8"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMotiv8" aria-expanded="false" aria-controls="collapseMotiv8">4.3.2 Enhancement della disclosure informativa</button></h2>
+                              <div id="collapseMotiv8" class="accordion-collapse collapse" aria-labelledby="headingMotiv8" data-bs-parent="#motivationsAccordion"><div class="accordion-body"><strong>Situazione attuale:</strong> Leanus Score "Discreto" nonostante indicatori eccellenti.<br><strong>Opportunità:</strong> Miglioramento della trasparenza informativa.<br><strong>Intervento proposto:</strong> Potenziamento dell'informativa sulla continuità aziendale in nota integrativa. Integrazione di analisi prospettiche e stress test. Dettaglio sui processi di risk management implementati. Illustrazione delle strategie di crescita sostenibile.<br><strong>Potenziale impatto:</strong> <span class="text-success">Miglioramento della percezione qualitativa</span>.<br><strong>Base normativa:</strong> Art. 2427 c.c. e OIC 11 per l'informativa completa e trasparente.</div></div>
+                          </div>
+                      </div> <!-- Fine Accordion -->
+                 </div>
+            </div>
+
+             <!-- Sezione 6: Impatto Complessivo -->
+              <div class="card mb-4 report-section" id="impact-summary">
+                 <div class="card-header"><h5 class="mb-0">5. Simulazione di Impatto Sugli Indicatori Chiave (Scenario Post-Ottimizzazione Ottimistico)</h5></div>
+                 <div class="card-body small">
+                      <div class="row">
+                         <div class="col-md-4">
+                             <h6 class="card-title-small">5.1 Impatto Indici Economici</h6>
+                             <ul class="list-styled">
+                                 <li><strong>EBITDA:</strong> <span class="text-success">~€3.83M - €3.83M</span> (da €3.78M)</li>
+                                 <li><strong>EBITDA Margin:</strong> <span class="text-success">~21,9% - 22,0%</span> (da 21,64%)</li>
+                                 <li><strong>EBIT:</strong> <span class="text-success">~€3.79M - €3.82M</span> (da €3.76M)</li>
+                                 <li><strong>Utile Netto:</strong> <span class="text-success">~€2.62M - €2.66M</span> (da €2.59M)</li>
+                             </ul>
+                         </div>
+                         <div class="col-md-4">
+                              <h6 class="card-title-small">5.2 Impatto Indici Patrimoniali/Finanziari</h6>
+                              <ul class="list-styled">
+                                 <li><strong>Immobilizzazioni immateriali:</strong> <span class="text-success">~€403K - €503K</span> (da €253K)</li>
+                                 <li><strong>Liquidità efficace:</strong> <span class="text-success">~€138K - €238K</span> (da €38K)</li>
+                                 <li><strong>Ciclo del circolante:</strong> <span class="text-success">~-176gg - -146gg</span> (da -226gg)</li>
+                                 <li><strong>ROI:</strong> <span class="text-success">~131,6% - 133,0%</span> (da 130,5%)</li>
+                             </ul>
+                         </div>
+                          <div class="col-md-4">
+                              <h6 class="card-title-small">5.3 Impatto Rating/Rischio</h6>
+                               <ul class="list-styled">
+                                  <li><strong>Leanus Score:</strong> <span class="text-success">Upgrade a "2 - Buono" (12-15)</span> (da "3 - Discreto")</li>
+                                  <li><strong>Liquidità/Ricavi:</strong> <span class="text-success">Miglioramento a 0,8-1,4%</span> (da 0,22%)</li>
+                                  <li><strong>Cash Flow Operativo/Ricavi:</strong> <span class="text-success">Incremento a 2,2-2,8%</span> (da 1,68%)</li>
+                                  <li><strong>Z-Score di Altman:</strong> <span class="text-success">Mantenimento posizione eccellente (>11)</span></li>
+                                  <li><strong>Quality of Earnings Score:</strong> <span class="text-success">Miglioramento a 7,5-8,0/10</span> (da 6,5/10)</li>
+                               </ul>
+                          </div>
+                      </div>
+                 </div>
+            </div>
+
+            <!-- Sezione 7: Conclusioni -->
+            <div class="card mb-4 report-section" id="final-thoughts">
+                 <div class="card-header"><h5 class="mb-0">7. Conclusioni e Raccomandazioni</h5></div>
+                 <div class="card-body small">
+                     <h6 class="card-title-small">7.1 Sintesi degli interventi prioritari</h6>
+                     <ul class="list-styled">
+                        <li>Capitalizzazione strategica di costi pluriennali: impatto potenziale fino a <span class="text-success">+€300.000</span> (Immobilizzazioni)</li>
+                        <li>Razionalizzazione del capitale circolante: impatto potenziale <span class="text-success">+€1.000.000-€1.300.000</span> (Liquidità)</li>
+                        <li>Ottimizzazione fiscale strutturale: impatto potenziale <span class="text-success">+€50.000-€100.000</span> (Risparmio fiscale)</li>
+                        <li>Enhancement del cut-off temporale: impatto potenziale <span class="text-success">+€100.000-€200.000</span> (Affinamento rappresentazione)</li>
+                     </ul>
+
+                     <h6 class="card-title-small mt-3">7.2 Raccomandazioni strategiche prioritarie</h6>
+                     <ol>
+                        <li><strong>Implementazione immediata</strong> degli interventi a basso rischio (capitalizzazioni, ammortamenti, accantonamenti).</li>
+                        <li><strong>Strutturazione progressiva</strong> delle soluzioni di supply chain finance per la sostenibilità del modello operativo.</li>
+                        <li><strong>Enhancement sistematico</strong> della disclosure per il miglioramento del profilo qualitativo.</li>
+                        <li><strong>Monitoraggio continuo</strong> attraverso dashboard evolute degli indicatori chiave.</li>
+                     </ol>
+
+                     <h6 class="card-title-small mt-3">7.3 Considerazioni finali</h6>
+                     <p>GUGLIETTA GLOBAL SPA presenta un profilo di eccellenza operativa con margini di ottimizzazione significativi. Gli interventi proposti, implementati nel rigoroso rispetto della normativa vigente, consentirebbero di:</p>
+                     <ul>
+                         <li>Massimizzare la rappresentazione veritiera della performance aziendale</li>
+                         <li>Ottimizzare la struttura finanziaria attraverso la normalizzazione del capitale circolante</li>
+                         <li>Migliorare il profilo di bancabilità per supportare la crescita futura</li>
+                         <li>Creare valore sostenibile per tutti gli stakeholder</li>
+                     </ul>
+                     <hr>
+                     <p class="fst-italic"><small>La presente relazione è stata elaborata esclusivamente sulla base delle informazioni contenute nel Report Leanus del 07/07/2025 e seguendo il framework metodologico del Manuale Kitzanos V7.0. Gli interventi proposti sono formulati nel rigoroso rispetto della normativa vigente e dei principi contabili nazionali OIC, configurandosi come legittimi affinamenti delle rappresentazioni contabili e delle stime valutative consentite dal quadro normativo, senza alterazione dei fatti economici sottostanti.</small></p>
+                 </div>
+            </div>
+
+
+            <!-- ================================================================ -->
+            <!-- FINE CONTENUTO BILANCIO PLUS -->
+            <!-- ================================================================ -->
+
+        </div> <!-- /dashboard-container -->
+
+ <!-- Footer Standard (per coerenza, ma nascosto in stampa) -->
+         <footer class="footer no-print">
+              <div class="container-fluid px-4"> <!-- Usa container-fluid per larghezza piena -->
+                  <div class="row">
+                      <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                           <span id="currentYearFooter"></span> © SCAN360 Kitzanos
+                      </div>
+                      <div class="col-md-6 text-center text-md-end">
+                          Powered by <a href="http://www.kitzanos.com" target="_blank" class="text-white fw-bold">Kitzanos Lab</a>
+                          <img src="assets/img/logo_kitzanos.png" alt="Kitzanos Logo" class="ms-2" style="height: 20px; vertical-align: middle;">
+                      </div>
+                  </div>
+              </div>
+          </footer>
+
+
+    </div> <!-- /main-wrapper -->
+
+    <!-- Script JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js è già caricato nell'HEAD -->
+
+    <!-- ### START SCRIPT JS EMBEDDED ### -->
+    <script>
+        // ======================================
+        // HELPER FUNCTIONS
+        // ======================================
+        function formatCurrency(value, decimals = 0) {
+            if (isNaN(value)) return value;
+            return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value);
+        }
+        function formatNumber(value, decimals = 0) {
+             if (isNaN(value)) return value;
+             return new Intl.NumberFormat('it-IT', { style: 'decimal', minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value);
+         }
+        function formatPercentage(value) {
+             if (isNaN(value)) return value;
+             const displayValue = Math.abs(value) < 1 && Math.abs(value) !== 0 ? value * 100 : value;
+             return new Intl.NumberFormat('it-IT', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(displayValue) + '%';
+        }
+        function formatRatio(value, decimals = 2) {
+            if (isNaN(value)) return value;
+            return new Intl.NumberFormat('it-IT', { style: 'decimal', minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value) + 'x';
+        }
+
+
+        function initChart(canvasId, type, data, options) {
+             const canvas = document.getElementById(canvasId);
+             if (!canvas) { console.error(`Canvas element with ID '${canvasId}' not found.`); return null; }
+             const ctx = canvas.getContext('2d');
+             const existingChart = Chart.getChart(canvasId);
+             if (existingChart) { try { existingChart.destroy(); } catch(e) { console.warn(`Could not destroy previous chart instance for ${canvasId}: ${e}`);} }
+             ctx.clearRect(0, 0, canvas.width, canvas.height);
+             if (!data || !data.labels || !data.datasets) {
+                  ctx.fillStyle = '#dc3545'; ctx.font = '14px "Titillium Web", sans-serif'; ctx.textAlign = 'center';
+                  ctx.fillText('Errore: Dati non disponibili.', canvas.width / 2, canvas.height / 2);
+                  console.error(`Dati non validi forniti a initChart per ${canvasId}`);
+                  return null;
+              }
+             try {
+                 const newChart = new Chart(ctx, { type: type, data: data, options: options });
+                 return newChart;
+             } catch (error) {
+                  console.error(`Errore durante la creazione del grafico ${canvasId}:`, error);
+                  ctx.fillStyle = '#dc3545'; ctx.font = '14px "Titillium Web", sans-serif'; ctx.textAlign = 'center';
+                  const errorMessage = error.message && typeof error.message === 'string' ? (error.message.length > 100 ? error.message.substring(0, 97) + '...' : error.message) : 'Errore sconosciuto';
+                  ctx.fillText(`Errore grafico: ${errorMessage}`, canvas.width / 2, canvas.height / 2);
+                 return null;
+             }
+         }
+
+        // ======================================
+        // CHART DATA (Bilancio Plus - Guglietta Global - Scenario Ottimistico)
+        // ======================================
+         const colorAttuale = getComputedStyle(document.documentElement).getPropertyValue('--color-attuale').trim() || 'rgba(74, 105, 189, 0.7)';
+         const colorAttualeBorder = getComputedStyle(document.documentElement).getPropertyValue('--color-attuale-border').trim() || 'rgba(74, 105, 189, 1)';
+         const colorOttimizzato = getComputedStyle(document.documentElement).getPropertyValue('--color-ottimizzato').trim() || 'rgba(76, 175, 80, 0.7)';
+         const colorOttimizzatoBorder = getComputedStyle(document.documentElement).getPropertyValue('--color-ottimizzato-border').trim() || 'rgba(76, 175, 80, 1)';
+
+         // Dati presi dal report
+         const utileNettoAttuale = 2587447;
+         const utileNettoOttimizzato = 2657447; // Valore inferiore del range
+         const ebitdaMarginAttuale = 21.64;
+         const ebitdaMarginOttimizzato = 21.9; // Valore inferiore del range
+         const cccAttuale = -226;
+         const cccOttimizzato = -176; // Valore inferiore del range (miglioramento minore)
+         const pfnEbitdaAttuale = -0.01;
+         const pfnEbitdaOttimizzato = -0.02; // Stima miglioramento
+
+         const utileNettoData = {
+             labels: ['Attuale (2024)', 'Post Ottimizzazione'],
+             datasets: [{
+                 label: 'Utile Netto (€)', data: [utileNettoAttuale, utileNettoOttimizzato],
+                 backgroundColor: [colorAttuale, colorOttimizzato],
+                 borderColor: [colorAttualeBorder, colorOttimizzatoBorder], borderWidth: 1
+             }]
+         };
+         const ebitdaMarginData = {
+              labels: ['Attuale (2024)', 'Post Ottimizzazione'],
+              datasets: [{
+                  label: 'EBITDA Margin (%)', data: [ebitdaMarginAttuale, ebitdaMarginOttimizzato],
+                  backgroundColor: [colorAttuale, colorOttimizzato],
+                  borderColor: [colorAttualeBorder, colorOttimizzatoBorder], borderWidth: 1
+              }]
+          };
+          const cccData = {
+               labels: ['Attuale (2024)', 'Post Ottimizzazione'],
+               datasets: [{
+                   label: 'Ciclo Circolante (gg)', data: [cccAttuale, cccOttimizzato],
+                   backgroundColor: [colorAttuale, colorOttimizzato],
+                   borderColor: [colorAttualeBorder, colorOttimizzatoBorder], borderWidth: 1
+               }]
+           };
+           const pfnEbitdaData = {
+                labels: ['Attuale (2024)', 'Post Ottimizzazione'],
+                datasets: [{
+                    label: 'PFN/EBITDA (ratio)', data: [pfnEbitdaAttuale, pfnEbitdaOttimizzato],
+                    backgroundColor: [colorAttuale, colorOttimizzato],
+                    borderColor: [colorAttualeBorder, colorOttimizzatoBorder], borderWidth: 1
+                }]
+            };
+
+        // ======================================
+        // CHART OPTIONS
+        // ======================================
+        const barChartOptionsBase = {
+             responsive: true, maintainAspectRatio: false, indexAxis: 'x',
+             scales: { y: { beginAtZero: true, ticks: {} }, x: { grid: { display: false }} },
+             plugins: { legend: { display: false }, title: { display: false },
+                 tooltip: {
+                     callbacks: {
+                         label: function(context) {
+                             let label = context.dataset.label || ''; if (label) label += ': '; let value = context.parsed.y;
+                             if (context.dataset.label.includes('(gg)')) { label += formatNumber(value, 0) + ' gg'; }
+                             else if (context.dataset.label.includes('(%)')) { label += formatPercentage(value); }
+                             else if (context.dataset.label.includes('(ratio)')) { label += formatRatio(value, 2); } // Formattazione per ratio
+                             else { label += formatCurrency(value, 0); }
+                             return label;
+                         }
+                     }
+                 }
+             },
+             animation: { duration: 400 }
+         };
+         const utileNettoOptions = { ...barChartOptionsBase, scales: { ...barChartOptionsBase.scales, y: { ...barChartOptionsBase.scales.y, ticks: { callback: function(v) { return formatCurrency(v, 0); } } } } };
+         const ebitdaMarginOptions = { ...barChartOptionsBase, scales: { ...barChartOptionsBase.scales, y: { ...barChartOptionsBase.scales.y, suggestedMin: 20, ticks: { callback: function(v) { return formatPercentage(v); } } } } };
+         const cccOptions = { ...barChartOptionsBase, scales: { ...barChartOptionsBase.scales, y: { ...barChartOptionsBase.scales.y, title: {display: true, text: 'Giorni'}, suggestedMax: 0, ticks: { callback: function(v) { return formatNumber(v, 0) + ' gg'; } } } } };
+         const pfnEbitdaOptions = { ...barChartOptionsBase, scales: { ...barChartOptionsBase.scales, y: { ...barChartOptionsBase.scales.y, title: {display: true, text: 'Ratio (x)'}, suggestedMax: 0, ticks: { callback: function(v) { return formatRatio(v, 2); } } } } };
+
+        // ======================================
+        // CHART INITIALIZATION & OTHER SCRIPTS
+        // ======================================
+        document.addEventListener('DOMContentLoaded', function() {
+             console.log("Initializing scripts for Bilancio Plus Guglietta Global (Embedded - Ottimistico)...");
+             // --- Initialize Charts ---
+             try { initChart('utileNettoChart', 'bar', utileNettoData, utileNettoOptions); } catch(e) { console.error("Errore init utileNettoChart:", e); }
+             try { initChart('ebitdaMarginChart', 'bar', ebitdaMarginData, ebitdaMarginOptions); } catch(e) { console.error("Errore init ebitdaMarginChart:", e); }
+             try { initChart('cccChart', 'bar', cccData, cccOptions); } catch(e) { console.error("Errore init cccChart:", e); }
+             try { initChart('pfnEbitdaChart', 'bar', pfnEbitdaData, pfnEbitdaOptions); } catch(e) { console.error("Errore init pfnEbitdaChart:", e); }
+
+             // --- Other Page Scripts ---
+             const currentYear = new Date().getFullYear();
+             document.getElementById('currentYearSidebar').textContent = currentYear;
+             const footerYear = document.getElementById('currentYearFooter');
+             if (footerYear) footerYear.textContent = currentYear;
+
+             // Rimuovi codice IRP se non necessario/presente
+             const irpHeaderBadge = document.getElementById('irp-header-badge');
+             if(irpHeaderBadge) {
+                 irpHeaderBadge.remove(); // Rimuove l'elemento se esiste
+             }
+
+             if (typeof window.logout !== 'function') { window.logout = function() { console.log("Logout placeholder"); alert("Funzione Logout non implementata."); } }
+             if (typeof window.printDocument !== 'function') { window.printDocument = function() { window.print(); } }
+             console.log("All scripts initialization attempt complete (Embedded).");
+         });
+    </script>
+    <!-- ### END EMBEDDED JAVASCRIPT ### -->
+
+    <scan-chat data-bot-id="2778f5c8-8cb8-45c0-a7bd-cf97b4ab0411"></scan-chat>
+    <script src="../js/bundle.js"></script>
+
+</body>
+</html>

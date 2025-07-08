@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circolante e Flussi di Cassa - Guglietta Global S.p.A. | SCAN V12</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <link href="../css/print.css" rel="stylesheet" media="print">
+    <style>
+        /* Stili specifici V12 (possono andare in styles.css se usati altrove) */
+        .cycle-kpi { text-align: center; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--card-border); background-color: var(--white); margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.04);}
+        .cycle-kpi .kpi-label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 3px; }
+        .cycle-kpi .kpi-value-days-lg { font-size: 2.1rem; font-weight: 700; line-height: 1.1; }
+        .card-header-primary { background-color: rgba(25, 25, 112, 0.05); border-bottom: 1px solid rgba(25, 25, 112, 0.2); color: var(--primary); }
+        .card-header-secondary { background-color: rgba(74, 105, 189, 0.05); border-bottom: 1px solid rgba(74, 105, 189, 0.2); color: var(--secondary); }
+        .strategy-card { background-color: var(--white); border-left: 4px solid #4f6d7a; padding: 1.25rem; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+        .strategy-card h6 { color: #4f6d7a; margin-bottom: 0.75rem; font-weight: 600;}
+        .strategy-card ol { padding-left: 1.2rem; margin-bottom: 0; }
+        .strategy-card li { font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .report-section + .report-section { margin-top: 2.5rem; }
+        .waterfall-label { font-size: 0.75rem; text-align: center; color: var(--text-secondary); margin-top: -5px; }
+        /* Altri stili V9/V11 */
+        :root {
+            --primary: #191970; --secondary: #4a69bd; --success: #4CAF50;
+            --warning: #FFC107; --danger: #F44336; --info: #0dcaf0;
+            --light: #f8f9fa; --dark: #343a40; --white: #ffffff;
+            --text-primary: #212529; --text-secondary: #6c757d;
+            --card-bg: var(--white); --card-border: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        html, body { height: 100%; overflow-x: hidden; font-family: 'Titillium Web', sans-serif; background-color: #f4f8fb; }
+        body { display: flex; }
+        .sidebar { width: 250px; background-color: var(--primary); color: #e0e0e0; position: fixed; top: 0; bottom: 0; left: 0; z-index: 1031; display: flex; flex-direction: column; box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1); transition: width 0.3s ease; overflow-y: auto; }
+        .main-wrapper { margin-left: 250px; width: calc(100% - 250px); display: flex; flex-direction: column; min-height: 100vh; position: relative; padding-top: 70px; }
+        .dashboard-header { background-color: var(--white); padding: 15px 30px; border-bottom: 1px solid var(--card-border); box-shadow: 0 2px 5px rgba(0,0,0,0.05); min-height: 70px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 250px; right: 0; z-index: 1030; }
+        .dashboard-container { padding: 30px; flex-grow: 1; width: 100%; }
+        .footer { background-color: var(--primary); color: rgba(255, 255, 255, 0.7); padding: 15px 30px; font-size: 0.85rem; margin-top: auto; flex-shrink: 0; width: 100%; }
+        .footer img { max-height: 20px; width: auto; filter: brightness(0) invert(1); opacity: 0.8; vertical-align: middle;}
+        .sidebar-header { padding: 10px 20px; margin-bottom: 20px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .sidebar-header img { max-height: 40px; } .sidebar-header h5 { color: var(--white); margin-top: 10px; font-size: 1.1rem; font-weight: 600; }
+        .sidebar-nav { list-style: none; padding: 0; } .sidebar-nav .nav-item { margin: 0; }
+        .sidebar-nav .nav-link { color: #e0e0e0; padding: 12px 20px; display: flex; align-items: center; font-size: 0.95rem; font-weight: 500; border-left: 4px solid transparent; transition: all 0.2s ease; }
+        .sidebar-nav .nav-link:hover { background-color: rgba(255, 255, 255, 0.05); color: var(--white); border-left-color: var(--warning); }
+        .sidebar-nav .nav-link.active { background-color: rgba(255, 255, 255, 0.1); color: var(--white); font-weight: 600; border-left-color: var(--white); }
+        .sidebar-nav .nav-link i { margin-right: 15px; width: 20px; text-align: center; font-size: 1rem; }
+        .sidebar-nav .nav-title { padding: 10px 20px; font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; }
+        .sidebar-footer { margin-top: auto; padding: 15px 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.9rem; text-align: left; }
+        .section-title { color: var(--primary); font-weight: 600; margin-top: 2.5rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--secondary); font-size: 1.75rem; display: flex; align-items: center; } .section-title i { margin-right: 10px; }
+        .dashboard-card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); transition: all 0.3s ease; height: 100%; }
+        .dashboard-card:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.1); transform: translateY(-3px); }
+        .card-title-small { font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .table { border: 1px solid var(--card-border); margin-bottom: 1rem; } .table thead th { background-color: var(--light); color: var(--primary); font-weight: 600; border-bottom: 2px solid var(--primary); font-size: 0.9rem; white-space: nowrap; } .table-hover tbody tr:hover { background-color: #eef2f7; } .table td, .table th { vertical-align: middle; padding: 0.6rem 0.75rem; font-size: 0.9rem;} .value-highlight { font-weight: 600; color: var(--primary); } .text-end { text-align: right !important;} .text-success { color: var(--success) !important; } .text-danger { color: var(--danger) !important; } .text-warning { color: var(--warning) !important; } .text-secondary { color: var(--text-secondary) !important; }
+        .alert-box { padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid; } .alert-box h5 { margin-bottom: 10px; font-size: 1.1rem; font-weight: 600;} .alert-box ul { padding-left: 20px; margin-bottom: 0; font-size: 0.9rem;} .alert-box.alert-success { background-color: #d1e7dd; border-color: #a3cfbb; color: #0a3622; } .alert-box.alert-warning { background-color: #fff3cd; border-color: #ffda6a; color: #664d03; } .alert-box.alert-danger { background-color: #f8d7da; border-color: #f1aeb5; color: #58151c; } .alert-box.alert-info { background-color: #cff4fc; border-color: #9eeaf9; color: #055160; }
+        .status-badge { font-size: .75em; font-weight: 700; line-height: 1; padding: .35em .65em; border-radius: .375rem; color: white; display: inline-block; } .status-badge.bg-success { background-color: var(--success) !important; } .status-badge.bg-warning { background-color: var(--warning) !important; color: var(--dark) !important;} .status-badge.bg-danger { background-color: var(--danger) !important; } .status-badge.bg-info { background-color: var(--info) !important; color: var(--dark) !important;}
+        .chart-container { height: 300px; margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 8px; border: 1px solid var(--card-border); box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: relative; }
+        .icon-circle { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: white; margin-right: 12px; font-size: 0.9rem; flex-shrink: 0; }
+        .bg-icon-success { background-color: var(--success); } .bg-icon-warning { background-color: var(--warning); } .bg-icon-danger { background-color: var(--danger); } .bg-icon-info { background-color: #4f6d7a; } .bg-icon-primary { background-color: var(--primary); } .bg-icon-secondary { background-color: var(--secondary); }
+        @media (max-width: 991.98px) { .sidebar { width: 0; border: none; box-shadow: none;} .main-wrapper { margin-left: 0; width: 100%; padding-top: 56px; } .dashboard-header { left: 0; width: 100%; min-height: 56px; padding: 5px 15px;} .header-title h5 { font-size: 1rem;} .header-title p { font-size: 0.75rem;} .dashboard-container { padding: 15px;} .footer { padding: 10px 15px;} }
+        @media print { body { display: block; } .main-wrapper { margin-left: 0; width: 100%; padding-top: 0; } .no-print { display: none !important; } .report-section { page-break-inside: avoid; } }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar no-print">
+        <div class="sidebar-header"> <img src="../assets/img/logo_scan.png" alt="SCAN Logo" style="max-height: 40px;"> <h5>Guglietta Global S.p.A.</h5> </div>
+        <ul class="sidebar-nav flex-grow-1">
+            <li class="nav-item"> <a class="nav-link" href="../dashboard_v2.html"> <i class="fas fa-tachometer-alt fa-fw"></i> Dashboard </a> </li>
+            <li class="nav-title">Analisi Dettagliata</li>
+            <li class="nav-item"> <a class="nav-link" href="parte1_sintesi.html"> <i class="fas fa-file-alt fa-fw"></i> Sintesi e Profilo </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="parte2_economico.html"> <i class="fas fa-balance-scale fa-fw"></i> Analisi Economica </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="parte3_patrimoniale.html"> <i class="fas fa-landmark fa-fw"></i> Analisi Patrimoniale </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="parte4_bancabilita.html"> <i class="fas fa-university fa-fw"></i> Bancabilità </a> </li>
+            <li class="nav-item"> <a class="nav-link active" href="parte5_circolante_flussi.html"> <i class="fas fa-sync-alt fa-fw"></i> Circolante e Flussi </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="parte6_rischi-raccomandazioni.html"> <i class="fas fa-exclamation-triangle fa-fw"></i> Rischi e Azioni </a> </li>
+            <li class="nav-title">Approfondimenti</li>
+            <li class="nav-item"> <a class="nav-link" href="irp_dettaglio.html"> <i class="fas fa-shield-alt fa-fw"></i> Dettaglio IRP </a> </li>
+        </ul>
+        <div class="sidebar-footer"> <small>SCAN360 © <span id="currentYearSidebar"></span> Kitzanos</small> </div>
+    </aside>
+
+    <!-- Contenuto Principale Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header Orizzontale -->
+        <header class="dashboard-header no-print">
+            <div class="header-title">
+                <h5 class="mb-0">Report Dettagliato: Analisi Circolante e Flussi</h5>
+                <p class="mb-0">Guglietta Global S.p.A. | <span class="report-date">31 Dicembre 2024</span></p>
+            </div>
+            <div class="header-controls d-flex align-items-center">
+                <span id="irp-header-badge" class="badge me-3"></span> <!-- Badge IRP -->
+                <button class="btn btn-sm btn-outline-secondary me-2 print-button" onclick="printDocument()"> <i class="fas fa-print"></i> Stampa </button>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light border dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false"> <i class="fas fa-user-circle me-1"></i> Guglietta Global S.p.A. </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton"> <li><button class="dropdown-item" type="button" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></li> </ul>
+                </div>
+            </div>
+        </header>
+        <div class="container d-none d-print-block mt-4 mb-4">
+            <h1 class="text-center mb-0"><span class="company-name">Guglietta Global S.p.A.</span></h1>
+            <p class="text-center mb-0">Report Dettagliato: Analisi Circolante e Flussi | <span class="report-date">31 Dicembre 2024</span></p>
+            <hr>
+        </div>
+
+        <!-- Area Contenuto Specifico del Report -->
+        <div class="dashboard-container">
+
+            <!-- ================================================================ -->
+            <!-- CONTENUTO SPECIFICO PARTE 5 - V12 - Updated for Guglietta -->
+            <!-- ================================================================ -->
+
+            <h2 class="section-title" id="capital"><i class="fas fa-sync-alt me-2"></i>5.1 ANALISI CAPITALE CIRCOLANTE</h2>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-primary"><h5 class="mb-0">Sintesi Ciclo Capitale Circolante</h5></div>
+                 <div class="card-body">
+                     <p>Il capitale circolante di GUGLIETTA GLOBAL SPA presenta caratteristiche peculiari tipiche di un'impresa operante nel settore costruzioni su commessa. L'analisi del ciclo del circolante evidenzia dinamiche complesse determinate dalla natura discontinua e progettuale dell'attività aziendale.</p>
+                     <div class="row gy-3 mt-4 mb-4">
+                         <div class="col-md-3 col-6"> <div class="cycle-kpi border-warning"> <span class="kpi-label">DSO (Clienti)</span> <span class="kpi-value-days-lg text-warning">146</span> </div> </div>
+                         <div class="col-md-3 col-6"> <div class="cycle-kpi border-success"> <span class="kpi-label">DIO (Magazzino)</span> <span class="kpi-value-days-lg text-success">0</span> </div> </div>
+                         <div class="col-md-3 col-6"> <div class="cycle-kpi border-danger"> <span class="kpi-label">DPO (Fornitori)</span> <span class="kpi-value-days-lg text-danger">372</span> </div> </div>
+                          <div class="col-md-3 col-6"> <div class="cycle-kpi border-success bg-light"> <span class="kpi-label">Ciclo Circolante</span> <span class="kpi-value-days-lg text-success">-226</span> </div> </div>
+                     </div>
+                     <p class="small">Il ciclo del circolante fortemente negativo di -226 giorni rivela una dipendenza critica dal finanziamento dei fornitori, configurando un modello operativo caratterizzato da significativi squilibri temporali nella gestione dei flussi di cassa.</p>
+
+                     <h6 class="mt-4 card-title-small">TREND CICLO CIRCOLANTE 2022-2024 (GIORNI - Guglietta)</h6>
+                     <div class="table-responsive">
+                         <table class="table table-sm table-striped table-hover caption-top">
+                             <caption class="small text-muted"></caption>
+                             <thead class="table-light"><tr><th>Componente</th><th class="text-end">12/2022</th><th class="text-end">12/2023</th><th class="text-end">12/2024</th><th>Trend</th></tr></thead>
+                             <tbody>
+                                 <tr><td>DSO (giorni)</td><td class="text-end">249</td><td class="text-end">309</td><td class="text-end">146</td><td class="text-success">Miglioramento ↓</td></tr>
+                                 <tr><td>DIO (giorni)</td><td class="text-end">N.A.</td><td class="text-end">N.A.</td><td class="text-end">0</td><td class="text-success">Ottimale</td></tr>
+                                 <tr><td>DPO (giorni)</td><td class="text-end">90</td><td class="text-end">252</td><td class="text-end">372</td><td class="text-danger">Peggioramento ↑↑</td></tr>
+                                 <tr class="table-success fw-bold"><td>Ciclo Circolante</td><td class="text-end">159</td><td class="text-end">57</td><td class="text-end">-226</td><td class="text-success">Miglioramento ↓↓</td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+            </div>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-secondary"><h5 class="mb-0">Analisi Dettagliata Giorni e Test di Congruità</h5></div>
+                 <div class="card-body">
+                      <div class="row mb-4">
+                          <div class="col-lg-7 mb-3 mb-lg-0">
+                              <h6 class="text-center small">Grafico 5.1: Ciclo Capitale Circolante vs Benchmark (Giorni - Guglietta)</h6>
+                               <div class="chart-container" style="height: 320px;"> <canvas id="workingCapitalCycleChart"></canvas> </div>
+                          </div>
+                          <div class="col-lg-5 d-flex flex-column justify-content-center">
+                                <div class="alert-box alert-warning p-3 mb-3">
+                                     <h6 class="mb-1"><i class="fas fa-exclamation-triangle me-2"></i>Analisi Ciclo (-226 giorni)</h6>
+                                     <p class="small mb-0">Ciclo fortemente negativo che indica un modello di business finanziariamente insostenibile nel medio-lungo termine.</p>
+                                </div>
+                                 <div class="alert-box alert-danger p-3 small">
+                                    <h6 class="mb-2"><i class="fas fa-info-circle me-2"></i>Componenti Chiave 2024:</h6>
+                                    <ul class="list-unstyled mb-0">
+                                        <li><strong class="text-warning">DSO (146gg):</strong> Superiore alla soglia di 120 giorni, inefficienze nella gestione del credito.</li>
+                                        <li><strong class="text-success">DIO (0gg):</strong> Ottimale, coerente con il modello su commessa.</li>
+                                        <li><strong class="text-danger">DPO (372gg):</strong> Eccessivamente dilatato, rischi reputazionali e di interruzione della supply chain.</li>
+                                    </ul>
+                                </div>
+                          </div>
+                      </div>
+                      <hr class="my-4">
+                       <h6 class="mt-4 mb-3"><i class="fas fa-balance-scale me-1"></i> Test di Congruità Componenti (2024 - Guglietta)</h6>
+                       <div class="row gy-4">
+                           <!-- Test Crediti -->
+                           <div class="col-lg-4 col-md-6">
+                               <div class="dashboard-card h-100 border-warning">
+                                   <h6 class="card-title-small text-warning"><i class="fas fa-file-invoice-dollar me-1"></i> Crediti (DSO)</h6>
+                                   <ul class="list-unstyled small mb-0">
+                                       <li>Valore: € 7,09M</li>
+                                       <li>DSO Effettivo: <strong>146 gg</strong></li>
+                                       <li>DSO Normale: 105 gg</li>
+                                       <li class="mt-2 border-top pt-2">Giorni Eccesso: <strong class="text-danger">+41 gg</strong></li>
+                                       <li>Valore Immobilizzato: <strong class="text-danger">~€ 1,99M</strong></li>
+                                   </ul>
+                               </div>
+                           </div>
+                            <!-- Test Debiti -->
+                           <div class="col-lg-4 col-md-6">
+                               <div class="dashboard-card h-100 border-danger">
+                                   <h6 class="card-title-small text-danger"><i class="fas fa-truck me-1"></i> Debiti (DPO)</h6>
+                                    <ul class="list-unstyled small mb-0">
+                                       <li>Valore: € 14,05M</li>
+                                       <li>DPO Effettivo: <strong>372 gg</strong></li>
+                                       <li>DPO Standard: 75 gg</li>
+                                       <li class="mt-2 border-top pt-2">Giorni Eccesso: <strong class="text-danger">+297 gg</strong></li>
+                                       <li>Valore Finanziamento: <strong class="text-danger">~€ 11,24M</strong></li>
+                                   </ul>
+                               </div>
+                           </div>
+                            <!-- Test Magazzino -->
+                           <div class="col-lg-4 col-md-12">
+                               <div class="dashboard-card h-100 border-success">
+                                    <h6 class="card-title-small text-success"><i class="fas fa-boxes me-1"></i> Magazzino (DIO)</h6>
+                                     <ul class="list-unstyled small mb-0">
+                                       <li>Valore: € 0</li>
+                                       <li>DIO Effettivo: <strong>0 gg</strong></li>
+                                       <li>DIO Standard: 45 gg</li>
+                                       <li class="mt-2 border-top pt-2">Giorni Eccesso: <strong class="text-success">-45 gg</strong></li>
+                                       <li>Valore Risparmiato: <strong class="text-success">~€ 1,68M</strong></li>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                        <div class="alert-box alert-danger small mt-4 p-2">
+                           <strong>Analisi Dettagliata:</strong> Il confronto tra acquisti annui (€143.618) e debiti commerciali (€14.049.175) evidenzia una sproporzione di ratio 1:98, indicativa di una struttura debitoria consolidata nel tempo. La dilazione media di 372 giorni configura una violazione sistematica della normativa sui ritardi di pagamento, con potenziali passività per interessi di mora e rischi legali.
+                       </div>
+                       <hr class="my-4">
+                        <h6 class="mt-4 mb-3"><i class="fas fa-lightbulb me-1"></i> Strategie di Miglioramento e Impatto Finanziario Atteso (Guglietta)</h6>
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <div class="strategy-card h-100">
+                                    <h6><i class="fas fa-truck me-1"></i> Normalizzazione Fornitori</h6>
+                                     <ol> <li>Piano rientro scaglionato</li> <li>Accordi di rateizzazione</li> <li>Negoziazione moratorie</li> </ol>
+                                     <p class="fw-bold text-danger mt-2 mb-0">Fabbisogno: -€11,24M</p>
+                                      <small class="text-muted">(Target DPO 90gg)</small>
+                                 </div>
+                             </div>
+                              <div class="col-md-4">
+                                  <div class="strategy-card h-100">
+                                     <h6><i class="fas fa-file-invoice-dollar me-1"></i> Ottimizzazione Incassi</h6>
+                                      <ol> <li>Factoring pro-soluto</li> <li>Miglioramento credit management</li> <li>Revisione contrattuale</li> </ol>
+                                      <p class="fw-bold text-success mt-2 mb-0">Impatto Netto: +€4,25M</p>
+                                      <small class="text-muted">(Target DSO 105gg)</small>
+                                  </div>
+                              </div>
+                               <div class="col-md-4">
+                                  <div class="strategy-card h-100">
+                                      <h6><i class="fas fa-boxes me-1"></i> Gestione Commesse</h6>
+                                       <ol> <li>Mantenimento modello just-in-time</li> <li>Monitoraggio avanzamenti</li> <li>Ottimizzazione processi</li> </ol>
+                                       <p class="fw-bold text-success mt-2 mb-0">Impatto Netto: €0</p>
+                                       <small class="text-muted">(Mantenimento DIO 0gg)</small>
+                                  </div>
+                              </div>
+                         </div>
+                         <div class="alert-box alert-warning text-center mt-4">
+                              <strong>Fabbisogno Complessivo Stimato: -€ 7.000.000</strong>
+                         </div>
+                 </div>
+            </div>
+
+            <h2 class="section-title mt-5" id="cashflow"><i class="fas fa-stream me-2"></i>5.2 ANALISI FLUSSI DI CASSA</h2>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-primary"><h5 class="mb-0">Analisi Flussi di Cassa (da EBITDA a Variazione Netta Cassa) - 2024</h5></div>
+                 <div class="card-body">
+                     <p>La conversione dell'EBITDA in Free Cash Flow per GUGLIETTA GLOBAL SPA evidenzia dinamiche complesse correlate alla natura ciclica dell'attività edile e agli squilibri strutturali del capitale circolante.</p>
+                     <div class="row">
+                        <div class="col-lg-7 mb-3 mb-lg-0">
+                             <h6 class="text-center small">Grafico 5.2: Composizione Flussi di Cassa 2024 (Waterfall Semplificato - Guglietta)</h6>
+                            <div class="chart-container" style="height: 400px;"> <canvas id="cashFlowWaterfallChart"></canvas> </div>
+                        </div>
+                        <div class="col-lg-5">
+                             <h6 class="mt-1">Tabella 5.1: Dettaglio Flussi 2024 (€ - Guglietta)</h6>
+                             <div class="table-responsive">
+                                 <table class="table table-sm table-striped table-hover">
+                                      <thead class="table-light"><tr><th>Voce</th><th class="text-end">Valore</th><th class="text-end">% Ricavi</th></tr></thead>
+                                      <tbody>
+                                          <tr><td>EBITDA</td><td class="text-end">3.784.950</td><td class="text-end">21,64%</td></tr>
+                                          <tr><td><i class="fas fa-minus-circle text-danger fa-fw me-1"></i> Imposte</td><td class="text-end text-danger">(1.085.022)</td><td class="text-end">-6,20%</td></tr>
+                                          <tr><td><i class="fas fa-plus-circle text-success fa-fw me-1"></i> Variazione Cap. Circ. Op.</td><td class="text-end text-success">10.238.619</td><td class="text-end">58,53%</td></tr>
+                                          <tr class="table-secondary fw-bold"><td><i class="fas fa-equals fa-fw me-1"></i> Cash Flow Operativo</td><td class="text-end">293.754</td><td class="text-end">1,68%</td></tr>
+                                          <tr><td><i class="fas fa-minus-circle text-danger fa-fw me-1"></i> Cash Flow Investimenti</td><td class="text-end text-danger">(321.162)</td><td class="text-end">-1,84%</td></tr>
+                                          <tr class="table-secondary fw-bold"><td><i class="fas fa-equals fa-fw me-1"></i> Free Cash Flow (FCF)</td><td class="text-end text-danger">(27.408)</td><td class="text-end">-0,16%</td></tr>
+                                          <tr><td><i class="fas fa-plus-circle text-success fa-fw me-1"></i> Variazione Debiti Fin.</td><td class="text-end text-success">0</td><td class="text-end">0,00%</td></tr>
+                                          <tr><td><i class="fas fa-minus-circle text-warning fa-fw me-1"></i> Variazione Patrimonio Netto</td><td class="text-end text-warning">(9)</td><td class="text-end">0,00%</td></tr>
+                                          <tr class="table-danger fw-bold"><td><i class="fas fa-equals fa-fw me-1"></i> Variazione Netta Cassa</td><td class="text-end text-danger">(27.416)</td><td class="text-end">-0,16%</td></tr>
+                                      </tbody>
+                                 </table>
+                                 <p class="small text-muted mt-1 mb-0">*Fonte: Report Leanus / Analisi Flussi</p>
+                             </div>
+                        </div>
+                     </div>
+                     <h6 class="mt-4">Analisi Flussi di Cassa 2024 (Guglietta):</h6>
+                      <div class="alert-box alert-info small">
+                         <ul class="mb-0">
+                            <li><strong>Conversione EBITDA-CFO problematica (7,76%):</strong> Nonostante generazione massiva dal circolante (€10,24M), il CFO risulta limitato (€293K).</li>
+                            <li><strong>Investimenti contenuti (-€321K):</strong> Coerenti con la natura service-oriented del business.</li>
+                            <li><strong>FCF marginalmente negativo (-€27K):</strong> Nonostante EBITDA molto positivo (€3,78M).</li>
+                            <li><strong>Assenza operazioni finanziarie:</strong> Nessuna movimentazione debt/equity, coerente con la strategia di autofinanziamento.</li>
+                        </ul>
+                      </div>
+                 </div>
+            </div>
+
+            <div class="card mb-4 report-section">
+                 <div class="card-header card-header-secondary"><h5 class="mb-0">Trend Triennale e Proiezioni dei Flussi di Cassa</h5></div>
+                 <div class="card-body">
+                      <div class="row">
+                          <div class="col-lg-7 mb-3 mb-lg-0">
+                               <h6 class="text-center small">Grafico 5.3: Evoluzione Flussi di Cassa 2022-2024 (€ - Guglietta)</h6>
+                               <div class="chart-container" style="height: 320px;"> <canvas id="cashFlowTrendChart"></canvas> </div>
+                          </div>
+                           <div class="col-lg-5">
+                              <h6 class="mt-1">Interpretazione Trend (Guglietta):</h6>
+                               <ul class="small list-unstyled">
+                                  <li><i class="fas fa-sync-alt text-primary me-1"></i> CF Operativo in crescita (CAGR +844,4%) ma con volatilità elevata.</li>
+                                  <li><i class="fas fa-chart-line text-danger me-1"></i> Investimenti in aumento (CAGR +1.447,8%).</li>
+                                  <li><i class="fas fa-exchange-alt text-success me-1"></i> Gestione Debito: Assenza totale di movimentazioni.</li>
+                                  <li><i class="fas fa-donate text-warning me-1"></i> Variazioni PN trascurabili.</li>
+                                  <li><i class="fas fa-arrow-down text-danger me-1"></i> Variazione Netta Cassa: Positiva '22-'23, Negativa '24.</li>
+                               </ul>
+                          </div>
+                      </div>
+                       <hr class="my-4">
+                       <div class="row">
+                           <div class="col-lg-7 mb-3 mb-lg-0">
+                               <h6 class="text-center small">Grafico 5.4: Proiezioni Finanziarie 2024-2028 (€ - Guglietta)</h6>
+                                <div class="chart-container" style="height: 320px;"> <canvas id="cashFlowProjectionChart"></canvas> </div>
+                           </div>
+                            <div class="col-lg-5">
+                                <h6 class="mt-1">Analisi Proiezioni (Fonte Leanus - Guglietta):</h6>
+                                <ul class="small list-unstyled">
+                                   <li><i class="fas fa-arrow-up text-success me-1"></i> CF Operativo in forte crescita (€2,6M/anno).</li>
+                                   <li><i class="fas fa-ban text-warning me-1"></i> Investimenti: Nessuno previsto nel piano base.</li>
+                                   <li><i class="fas fa-arrow-down text-success me-1"></i> Mantenimento PFN negativa (cassa netta).</li>
+                                   <li><i class="fas fa-coins text-success me-1"></i> Forte accumulo liquidità (€10,5M al 2028).</li>
+                                   <li><i class="fas fa-check-circle text-success me-1"></i> DSCR Prospettico: Infinito (assenza debiti).</li>
+                                   <li><i class="fas fa-check-circle text-success me-1"></i> Sovraliquidità che richiede ottimizzazione strategica.</li>
+                                </ul>
+                                 <div class="alert alert-info small p-2 mt-2">L'accumulo previsto di liquidità (fino a €10,5M al 2028) richiede una strategia attiva di impiego produttivo per evitare distruzione di valore e costi opportunità.</div>
+                            </div>
+                       </div>
+                         <h6 class="mt-4">Suggerimenti Operativi per Miglioramento Flussi (Guglietta)</h6>
+                          <div class="table-responsive small">
+                            <table class="table table-sm table-striped table-hover">
+                               <thead class="table-light"><tr><th>Area</th><th>Azione Suggerita</th><th>Impatto Quantitativo</th></tr></thead>
+                               <tbody>
+                                   <tr><td>Gestione Liquidità Eccedente</td><td>Diversificazione investimenti portfolio</td><td class="text-success">ROI atteso 4-6% annuo</td></tr>
+                                   <tr><td>Normalizzazione Fornitori</td><td>Piano rientro graduato 18 mesi</td><td class="text-danger">Fabbisogno €11,2M</td></tr>
+                                   <tr><td>Ottimizzazione Fiscale</td><td>Ammortamenti accelerati, crediti d'imposta</td><td class="text-success">Saving 3-5% EBITDA</td></tr>
+                                   <tr><td>Diversificazione Ricavi</td><td>Espansione vertical-related services</td><td class="text-success">+15-25% fatturato</td></tr>
+                                   <tr><td>Cash Conversion Efficiency</td><td>Ottimizzazione ciclo ordine-incasso</td><td class="text-success">Miglioramento a 15-20%</td></tr>
+                                   <tr class="table-primary fw-bold"><td>Complessivo</td><td>Implementazione integrata</td><td>Miglioramento sostenibilità</td></tr>
+                               </tbody>
+                            </table>
+                        </div>
+                 </div>
+            </div>
+
+            <!-- ================================================================ -->
+            <!-- FINE CONTENUTO SPECIFICO PARTE 5 -->
+            <!-- ================================================================ -->
+
+        </div> <!-- /dashboard-container -->
+
+        <!-- Footer Standard V2 (Corretto) -->
+        <footer class="footer no-print"> <div class="container-fluid px-4"> <div class="row align-items-center"> <div class="col-md-6 text-center text-md-start mb-2 mb-md-0"> SCAN360 © <span id="currentYearFooterReport"></span> </div> <div class="col-md-6 text-center text-md-end"> Powered by <a href="http://www.kitzanos.com" target="_blank" class="text-white fw-bold">Kitzanos Lab</a> <img src="../assets/img/logo_kitzanos.png" alt="Kitzanos Logo" class="ms-2"> </div> </div> </div> </footer>
+
+    </div> <!-- /main-wrapper -->
+
+    <!-- Script JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/charts_config.js"></script>
+    <script src="../js/report_init.js"></script>
+     <script>
+        document.getElementById('currentYearSidebar').textContent = new Date().getFullYear();
+        document.getElementById('currentYearFooterReport').textContent = new Date().getFullYear();
+
+         // Script aggiornamento badge IRP header (Updated for Guglietta)
+         document.addEventListener('DOMContentLoaded', function() {
+             const irpScoreValue = 94.68; // Updated IRP Value
+             const irpHeaderBadge = document.getElementById('irp-header-badge');
+             if(irpHeaderBadge) {
+                 let badgeClass = 'bg-warning text-dark';
+                 if (irpScoreValue >= 71) badgeClass = 'bg-success'; // Basso
+                 else if (irpScoreValue < 51) badgeClass = 'bg-danger'; // Alto
+                 irpHeaderBadge.className = `badge ${badgeClass} me-3`;
+                 irpHeaderBadge.textContent = `IRP: ${irpScoreValue.toFixed(1)}`;
+             }
+
+              // Ensure logout function is defined
+             if (typeof logout !== 'function') {
+                 window.logout = function() {
+                    console.log("Logout action triggered (placeholder)");
+                }
+             }
+             // Ensure print function is defined
+             if (typeof printDocument !== 'function') {
+                window.printDocument = function() {
+                    window.print();
+                }
+             }
+         });
+</script>
+<scan-chat data-bot-id="2778f5c8-8cb8-45c0-a7bd-cf97b4ab0411"></scan-chat>
+<script src="../js/bundle.js"></script>
+</body>
+</html>
